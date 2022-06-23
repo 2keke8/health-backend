@@ -1,32 +1,23 @@
-package com.zky.health.pojo;
+package com.zky.health.entity;
 
-/**
- * @Description:
- * @BelongsProject: health
- * @BelongsPackage: com.zky.health.pojo
- * @Author: KeYu-Zhao
- * @CreateTime: 2022-06-23 10:53
- * @Email: 2540560264@qq.com
- * @Version: 1.0
- */
-import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-/**
- * 用户
- */
-public class User implements Serializable{
-    private Integer id; // 主键
-    private Date birthday; // 生日
-    private String gender; // 性别
-    private String username; // 用户名，唯一
-    private String password; // 密码
-    private String remark; // 备注
-    private String station; // 状态
-    private String telephone; // 联系电话
-    private Set<Role> roles = new HashSet<Role>(0);//对应角色集合
+public class User {
+    private Integer id;
+
+    private Date birthday;
+
+    private String gender;
+
+    private String username;
+
+    private String password;
+
+    private String remark;
+
+    private String station;
+
+    private String telephone;
 
     public Integer getId() {
         return id;
@@ -90,13 +81,5 @@ public class User implements Serializable{
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 }
