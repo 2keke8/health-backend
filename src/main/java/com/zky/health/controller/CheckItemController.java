@@ -1,5 +1,6 @@
 package com.zky.health.controller;
 
+<<<<<<< HEAD
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.zky.constant.MessageConstant;
 import com.zky.entity.PageResult;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 /**
  * @Description:
  * @BelongsProject: health
@@ -93,14 +96,69 @@ public class CheckItemController {
     }
 
     @RequestMapping("/findAll")
-    public Result findAll(){
-        try{
-            List<CheckItem> list= checkItemService.findAll();
-            return  new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS,list);
-        }catch (Exception e){
+    public Result findAll() {
+        try {
+            List<CheckItem> list = checkItemService.findAll();
+            return new Result(true, MessageConstant.QUERY_CHECKITEM_SUCCESS, list);
+        } catch (Exception e) {
             e.printStackTrace();
             //服务调用失败
             return new Result(false, MessageConstant.QUERY_CHECKITEM_FAIL);
         }
+    }
+    /**
+     * 分页查询数据
+     * @param queryPageBean
+     * @return
+     */
+    @RequestMapping("/findByPage.do")
+    public PageResult findByPage(@RequestBody QueryPageBean queryPageBean){
+        return checkItemService.findByPage(queryPageBean.getCurrentPage(),queryPageBean.getPageSize(),queryPageBean.getQueryString());
+    }
+
+    /**
+     * 添加数据
+     */
+    @RequestMapping("/add.do")
+    public Result add(@RequestBody CheckItem checkItem){
+        checkItemService.add(checkItem);
+        return new Result();
+    }
+
+    /**
+     * 根据id查询对象
+     * @param id
+     * @return
+     */
+    @RequestMapping("/findById.do")
+    public CheckItem findById(Integer id){
+        return checkItemService.findById(id);
+    }
+
+    /**
+     * 修改CheckItem
+     * @param checkItem
+     * @return
+     */
+    @RequestMapping("/update.do")
+    public Result update(@RequestBody CheckItem checkItem){
+        checkItemService.update(checkItem);
+        return new Result();
+    }
+
+    /**
+     * 删除检查项
+     */
+    @RequestMapping("/deleteCheckItem.do")
+    public Result deleteCheckItem(Integer id){
+        checkItemService.deleteCheckItem(id);
+        return new Result();
+    }
+
+    //查询所有
+    @RequestMapping("/findAll.do")
+    public List<CheckItem> findAll(){
+        return checkItemService.findAll();
+>>>>>>> origin/lpc
     }
 }
