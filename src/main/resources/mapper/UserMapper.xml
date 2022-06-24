@@ -15,21 +15,29 @@
     id, birthday, gender, username, password, remark, station, telephone
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user
+    where username = #{username}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zky.health.entity.User">
-    insert into t_user (id, birthday, gender, 
-      username, password, remark, 
+    insert into t_user (id, birthday, gender,
+      username, password, remark,
       station, telephone)
-    values (#{id,jdbcType=INTEGER}, #{birthday,jdbcType=DATE}, #{gender,jdbcType=VARCHAR}, 
-      #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{birthday,jdbcType=DATE}, #{gender,jdbcType=VARCHAR},
+      #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
       #{station,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zky.health.entity.User">
