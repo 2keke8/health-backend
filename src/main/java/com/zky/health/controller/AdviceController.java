@@ -26,7 +26,7 @@ import java.util.HashMap;
  * @description：健康干预，提供建议
  */
 @RestController
-@RequestMapping("/advice/")
+@RequestMapping("/api/advice/")
 
 public class AdviceController {
 
@@ -44,28 +44,30 @@ public class AdviceController {
     * */
     @RequestMapping(value = "queryalladvice")
     public Result QueryAllAdvice(){
-        Result result = null;
-        ArrayList<Advice> adviceDetails = new ArrayList<>();
+        Result result ;
+        ArrayList<Advice> adviceDetails;
         ArrayList<HashMap> resList= new ArrayList<>();
 
         adviceDetails = adviceService.getAlladvice();
-        for(Advice advice: adviceDetails){
-            HashMap<String, Object> details = new HashMap<>();
-            User user = userMapper.selectByPrimaryKey(advice.getUserId());
-            String username = user.getUsername();
-            String healtherName = userMapper.selectByPrimaryKey(advice.getHealtherId()).getUsername();
-            details.put("advice",advice);
-            details.put("user_name",username);
-            details.put("healther_name",healtherName);
-            resList.add(details);
-        }
         if(ObjectUtils.isEmpty(adviceDetails)){
-             result =Result.error();
+            result =Result.error();
         }else{
-             result = Result.success();
-             result.setData(resList);
+            for(Advice advice: adviceDetails){
+                HashMap<String, Object> details = new HashMap<>();
+                User user = userMapper.selectByPrimaryKey(advice.getUserId());
+                String username = user.getUsername();
+                String healtherName = userMapper.selectByPrimaryKey(advice.getHealtherId()).getUsername();
+                details.put("advice",advice);
+                details.put("user_name",username);
+                details.put("healther_name",healtherName);
+                resList.add(details);
+            }
+            result = Result.success();
+            result.setData(resList);
 
         }
+
+
         return  result;
     }
     /*

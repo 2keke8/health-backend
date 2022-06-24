@@ -2,6 +2,8 @@ package com.zky.health.dao;
 
 import com.zky.health.entity.Topic;
 
+import java.util.ArrayList;
+
 public interface TopicMapper {
     int deleteByPrimaryKey(Integer topicId);
 
@@ -14,4 +16,8 @@ public interface TopicMapper {
     int updateByPrimaryKeySelective(Topic record);
 
     int updateByPrimaryKey(Topic record);
+
+    Topic selectOneByQuestionId(Integer question_id);
+
+    ArrayList<Topic> selectByQuestionId(Integer questionId);
 }
