@@ -6,10 +6,7 @@ import com.zky.health.service.UserService;
 import com.zky.health.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -31,7 +28,8 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/api/login")
-    public Result login(String username, String password){
+    public Result login(@RequestParam("username") String username, @RequestParam("password") String password){
+
 
         Result result;
 

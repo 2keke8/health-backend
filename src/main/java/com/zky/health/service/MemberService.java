@@ -17,4 +17,5 @@ public interface MemberService {
 
     int insertMember(Member member);
 
+    int deleteMember(int userid);
 }

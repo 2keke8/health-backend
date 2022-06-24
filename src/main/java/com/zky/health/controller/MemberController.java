@@ -30,19 +30,19 @@ public class MemberController {
         Result result;
         if(!StringUtils.hasText(membername)){
             result = Result.error();
-            result.setMessage("请输入用户名~");
+            result.setMessage("请输入会员名~");
             return result;
         }
 
         Member member = memberService.queryByName(membername);
         if(member == null){
             result = Result.error();
-            result.setMessage("此用户名不存在");
+            result.setMessage("此会员名不存在");
             return result;
         }
 
         result = Result.success();
-        result.setMessage("查询用户成功");
+        result.setMessage("查询会员成功");
         result.setData(member);
         return result;
     }
@@ -57,7 +57,25 @@ public class MemberController {
             return result;
         }
         result = Result.success();
-        result.setMessage("插入成功！");
+        result.setMessage("插入会员成功！");
+        return result;
+    }
+
+    @RequestMapping("/api/deletemember")
+    public Result deleteUser(int memberid){
+
+        Result result;
+
+        int i = memberService.deleteMember(memberid);
+        if(i <= 0){
+            result = Result.error();
+            result.setMessage("删除会员失败！");
+            return result;
+        }
+
+        result = Result.success();
+        result.setMessage("删除会员成功");
+
         return result;
     }
 
