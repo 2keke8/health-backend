@@ -5,6 +5,7 @@ import com.zky.health.entity.Result;
 import com.zky.health.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,6 +44,20 @@ public class MemberController {
         result = Result.success();
         result.setMessage("查询用户成功");
         result.setData(member);
+        return result;
+    }
+
+    @RequestMapping("/api/addmember")
+    public Result addMember(@RequestBody Member member){
+        Result result;
+        int i = memberService.insertMember(member);
+        if(i <= 0){
+            result = Result.error();
+            result.setMessage("系统错误，插入失败！");
+            return result;
+        }
+        result = Result.success();
+        result.setMessage("插入成功！");
         return result;
     }
 

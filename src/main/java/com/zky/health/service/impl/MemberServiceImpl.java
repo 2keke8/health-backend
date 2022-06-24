@@ -25,4 +25,9 @@ public class MemberServiceImpl implements MemberService {
     public Member queryByName(String membername) {
         return memberMapper.selectByName(membername);
     }
+
+    @Override
+    public int insertMember(Member member) {
+        return memberMapper.insert(member);
+    }
 }

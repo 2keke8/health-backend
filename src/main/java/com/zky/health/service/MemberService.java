@@ -15,4 +15,6 @@ public interface MemberService {
 
     Member queryByName(String memberName);
 
+    int insertMember(Member member);
+
 }
