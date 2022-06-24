@@ -33,36 +33,4 @@
       </if>
     </trim>
   </insert>
-  <resultMap id="BaseResultMap" type="com.zky.health.entity.CheckgroupCheckitemKey">
-    <id column="checkgroup_id" jdbcType="INTEGER" property="checkgroupId" />
-    <id column="checkitem_id" jdbcType="INTEGER" property="checkitemId" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="com.zky.health.entity.CheckgroupCheckitemKey">
-    delete from t_checkgroup_checkitem
-    where checkgroup_id = #{checkgroupId,jdbcType=INTEGER}
-      and checkitem_id = #{checkitemId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.zky.health.entity.CheckgroupCheckitemKey">
-    insert into t_checkgroup_checkitem (checkgroup_id, checkitem_id)
-    values (#{checkgroupId,jdbcType=INTEGER}, #{checkitemId,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="com.zky.health.entity.CheckgroupCheckitemKey">
-    insert into t_checkgroup_checkitem
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="checkgroupId != null">
-        checkgroup_id,
-      </if>
-      <if test="checkitemId != null">
-        checkitem_id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="checkgroupId != null">
-        #{checkgroupId,jdbcType=INTEGER},
-      </if>
-      <if test="checkitemId != null">
-        #{checkitemId,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
 </mapper>
