@@ -1,6 +1,9 @@
 package com.zky.health.dao;
 
+import com.zky.health.entity.Member;
 import com.zky.health.entity.Ordersetting;
+
+import java.util.List;
 
 public interface OrdersettingMapper {
     int deleteByPrimaryKey(Integer id);
