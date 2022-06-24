@@ -19,4 +19,6 @@ public interface OrderServcie {
 
     int affirmOrder(int orderid);
 
+    int cancelOrder(int orderid);
+
 }

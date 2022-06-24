@@ -47,4 +47,23 @@ public class OrderServiceImpl implements OrderServcie {
 
         return i;
     }
+
+    /**
+     *
+     * @param orderid
+     * @return >0 成功 0:失败 -1：未预约
+     */
+    @Override
+    public int cancelOrder(int orderid) {
+
+        Order order = orderMapper.selectByPrimaryKey(orderid);
+        if(order == null) return 0;
+
+        if(0 == Integer.parseInt(order.getOrderstatus())) return -1;
+
+        order.setOrderstatus(String.valueOf(0));
+        int i = orderMapper.updateByPrimaryKey(order);
+
+        return i;
+    }
 }

@@ -66,4 +66,30 @@ public class OrderController {
         return result;
     }
 
+    @RequestMapping("/api/cancelorder")
+    public Result cancelorder(String orderid){
+
+        Result result;
+
+        int i = orderServcie.cancelOrder(Integer.parseInt(orderid));
+
+        if(i == -1){
+            result = Result.error();
+            result.setMessage("该会员还没有预约哦~");
+            return result;
+        }
+
+        if(i > 0){
+            result = Result.success();
+            result.setMessage("取消预约成功~");
+            return result;
+        }
+
+
+
+        result = Result.error();
+        result.setMessage("取消预约失败！请联系管理员");
+
+        return result;
+    }
 }
