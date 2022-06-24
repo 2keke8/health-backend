@@ -14,6 +14,10 @@
     insert into t_user_role (user_id, role_id)
     values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
   </insert>
+  <select id="selectUserRoleId" parameterType="Integer" resultType="Integer">
+    select role_id from t_user_role
+    where user_id = #{userid}
+  </select>
   <insert id="insertSelective" parameterType="com.zky.health.entity.UserRoleKey">
     insert into t_user_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
