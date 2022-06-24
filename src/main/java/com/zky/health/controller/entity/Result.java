@@ -1,4 +1,4 @@
-package com.zky.health.entity;
+package com.zky.health.controller.entity;
 
 /**
  * @Description:

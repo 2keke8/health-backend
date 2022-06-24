@@ -1,11 +1,9 @@
 package com.zky.health.controller;
 
 import com.zky.health.dao.UserMapper;
-import com.zky.health.entity.Result;
+import com.zky.health.controller.entity.Result;
 import com.zky.health.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
