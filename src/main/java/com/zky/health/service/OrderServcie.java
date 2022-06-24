@@ -17,4 +17,6 @@ public interface OrderServcie {
 
     List<Order> selectAllOrders();
 
+    int affirmOrder(int orderid);
+
 }

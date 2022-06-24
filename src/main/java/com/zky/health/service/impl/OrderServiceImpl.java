@@ -29,4 +29,22 @@ public class OrderServiceImpl implements OrderServcie {
 
     }
 
+    /**
+     *
+     * @param orderid
+     * @return >0 成功 0:失败 -1：已经预约
+     */
+    @Override
+    public int affirmOrder(int orderid) {
+
+        Order order = orderMapper.selectByPrimaryKey(orderid);
+        if(order == null) return 0;
+
+        if(1 == Integer.parseInt(order.getOrderstatus())) return -1;
+
+        order.setOrderstatus(String.valueOf(1));
+        int i = orderMapper.updateByPrimaryKey(order);
+
+        return i;
+    }
 }
