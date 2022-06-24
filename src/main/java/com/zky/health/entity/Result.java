@@ -15,31 +15,26 @@ import java.io.Serializable;
  * 封装返回结果
  */
 public class Result implements Serializable{
-    private boolean flag;//执行结果，true为执行成功 false为执行失败
 
-    private String code;//返回状态码
+
+    private  String code;
+    private boolean flag;//执行结果，true为执行成功 false为执行失败
     private String message;//返回结果信息
     private Object data;//返回数据
 
-
-    public Result(String code, String message) {
-        this.code = code;
-        this.message = message;
+    public static Result success(){
+        Result res = new Result(true,"成功");
+        res.setCode("200");
+        return res;
     }
 
-    public Result(String code, String message, Object data) {
-        this.code = code;
-        this.message = message;
-        this.data = data;
+    public static Result error(){
+        Result res = new Result(false,"失败");
+        res.setCode("401");
+        return res;
     }
 
-    public String getCode() {
-        return code;
-    }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public Result(boolean flag, String message) {
         super();
@@ -72,5 +67,13 @@ public class Result implements Serializable{
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
