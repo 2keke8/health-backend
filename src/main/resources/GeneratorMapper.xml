@@ -124,6 +124,30 @@
                enableDeleteByExample="false"
                enableSelectByExample="false"
                selectByExampleQueryId="false" />
+        <table tableName="t_checkgroup_checkitem" domainObjectName="CheckgroupCheckitem"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false" />
+        <table tableName="t_role_menu" domainObjectName="RoleMenu"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false" />
+        <table tableName="t_checkgroup_checkitem" domainObjectName="CheckgroupCheckitem"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId=  "false" />
+        <table tableName="t_user_role" domainObjectName="UserRole"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false" />
 
     </context>
 </generatorConfiguration>
