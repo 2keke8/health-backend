@@ -3,14 +3,12 @@ package com.zky.health.service.impl;
 import com.zky.health.constant.MyConstant;
 import com.zky.health.dao.UserMapper;
 import com.zky.health.dao.UserRoleMapper;
-import com.zky.health.entity.Result;
 import com.zky.health.entity.User;
 import com.zky.health.service.UserService;
 import com.zky.health.utils.JwtUtil;
 import com.zky.health.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 /**
  * @Description: 用户业务实现类
@@ -46,6 +44,8 @@ public class UserServiceImpl implements UserService {
             return 0;
         }
         //判断密码是否正确
+        System.out.println(MD5Utils.md5(password));
+        System.out.println(user.getPassword());
         if(!MD5Utils.md5(password).equals(user.getPassword())){
             return -1;
         }

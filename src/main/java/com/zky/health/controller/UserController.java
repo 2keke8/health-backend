@@ -6,6 +6,8 @@ import com.zky.health.service.UserService;
 import com.zky.health.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,20 +22,26 @@ import java.util.HashMap;
  * @Email: 2540560264@qq.com
  * @Version: 1.0
  */
+@CrossOrigin
 @RestController
+//@CrossOrigin(origins = "*",allowCredentials = "true")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @RequestMapping("/login")
+    @PostMapping("/api/login")
     public Result login(String username, String password){
 
+        Result result;
+
         if(!StringUtils.hasText(username) || !StringUtils.hasText(password)){
-            return new Result("401","用户名或密码不能为空哦~");
+            result = Result.error();
+            result.setMessage("用户名和密码不能为空哦~");
+            return result;
         }
 
-        Result result;
+
 
         int res = userService.login(username, password);
 
