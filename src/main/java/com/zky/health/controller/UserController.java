@@ -30,17 +30,17 @@ public class UserController {
     public Result login(String username, String password){
 
         if(!StringUtils.hasText(username) || !StringUtils.hasText(password)){
-            return new Result("401","用户名或密码不能为空哦~");
+            return new Result(false,"用户名或密码不能为空哦~");
         }
 
         int res = userService.login(username, password);
 
         if(res == 0){
-            return new Result("401","用户名不存在，请联系管理员~");
+            return new Result(false,"用户名不存在，请联系管理员~");
         }
         //判断密码是否正确
         if(res == -1){
-            return new Result("401","密码错误，请输入正确密码！");
+            return new Result(false,"密码错误，请输入正确密码！");
         }
 
         //封装返回结果
@@ -51,7 +51,7 @@ public class UserController {
         data.put("user",user);
         data.put("token",token);
         //登录成功
-        return new Result("200","登录成功，欢迎您~", data);
+        return new Result(true,"登录成功，欢迎您~", data);
 
     }
 

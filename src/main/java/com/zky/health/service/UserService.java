@@ -3,7 +3,6 @@ package com.zky.health.service;
 import com.zky.health.dao.UserMapper;
 import com.zky.health.entity.Result;
 import com.zky.health.entity.User;
-import org.springframework.stereotype.Service;
 
 /**
  * @Description: 用户业务类
