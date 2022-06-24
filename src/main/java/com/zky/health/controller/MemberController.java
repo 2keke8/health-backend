@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @Description: 会员控制器
  * @BelongsProject: health
@@ -75,6 +77,18 @@ public class MemberController {
 
         result = Result.success();
         result.setMessage("删除会员成功");
+
+        return result;
+    }
+
+    @RequestMapping("/api/queryallmembers")
+    public Result queryAllMembers(){
+
+        List<Member> members = memberService.selectAllMembers();
+
+        Result result = Result.success();
+        result.setData(members);
+        result.setMessage("查询会员列表成功");
 
         return result;
     }

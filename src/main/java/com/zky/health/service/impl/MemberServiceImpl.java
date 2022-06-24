@@ -6,6 +6,8 @@ import com.zky.health.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @Description: 会员实现类
  * @BelongsProject: health
@@ -24,6 +26,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member queryByName(String membername) {
         return memberMapper.selectByName(membername);
+    }
+
+    @Override
+    public List<Member> selectAllMembers() {
+        return memberMapper.selectAllMembers();
     }
 
     @Override
