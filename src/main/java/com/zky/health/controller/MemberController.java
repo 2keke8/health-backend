@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -90,10 +92,24 @@ public class MemberController {
     @RequestMapping("/api/queryallmembers")
     public Result queryAllMembers(){
 
+        ArrayList<HashMap> resList = new ArrayList<>();
+        Date date = new Date();
+        int currentYear = date.getYear();
+
         List<Member> members = memberService.selectAllMembers();
+        for (Member member : members) {
+            HashMap<Object, Object> resMap = new HashMap<>();
+            int age;
+            Date birthday = member.getBirthday();
+            int year = birthday.getYear();
+            age = currentYear - year + 1;
+            resMap.put("age",age);
+            resMap.put("member",member);
+            resList.add(resMap);
+        }
 
         Result result = Result.success();
-        result.setData(members);
+        result.setData(resList);
         result.setMessage("查询会员列表成功");
 
         return result;

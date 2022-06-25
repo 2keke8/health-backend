@@ -28,6 +28,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
     HostHolder hostHolder;
     @PostMapping("/api/login")
     public Result login(@RequestBody User user){
