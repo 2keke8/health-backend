@@ -27,4 +27,9 @@ public class CheckItemServiceImpl implements CheckItemService {
     public List<Checkitem> selectAllItems() {
         return checkitemMapper.selectAllItems();
     }
+
+    @Override
+    public int updateitem(Checkitem checkitem) {
+        return checkitemMapper.updateByPrimaryKey(checkitem);
+    }
 }

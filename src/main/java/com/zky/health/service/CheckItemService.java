@@ -17,4 +17,6 @@ public interface CheckItemService {
 
     List<Checkitem> selectAllItems();
 
+    int updateitem(Checkitem checkitem);
+
 }

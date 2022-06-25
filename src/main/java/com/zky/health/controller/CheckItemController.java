@@ -5,6 +5,7 @@ import com.zky.health.entity.Result;
 import com.zky.health.service.CheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,14 +40,25 @@ public class CheckItemController {
         return result;
 
     }
-//
-//    @RequestMapping("/api/queryitem/{code}")
-//    public Result queryitem(@PathVariable("code") String code){
-//
-//        Result result;
-//
-//        checkItemService.selectAllItems()
-//
-//    }
+
+    @RequestMapping("/api/updateitem")
+    public Result queryitem(@RequestBody Checkitem checkitem){
+
+        Result result;
+
+        int i = checkItemService.updateitem(checkitem);
+
+        if(i <= 0){
+            result = Result.error();
+            result.setMessage("更新检查项失败~");
+            return result;
+        }
+
+        result = Result.success();
+        result.setMessage("更新检查项成功");
+
+        return result;
+
+    }
 
 }
