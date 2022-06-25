@@ -19,4 +19,6 @@ public interface CheckItemService {
 
     int updateitem(Checkitem checkitem);
 
+    int deleteCheckItem(Integer id);
+
 }

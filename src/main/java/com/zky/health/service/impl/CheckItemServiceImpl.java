@@ -32,4 +32,9 @@ public class CheckItemServiceImpl implements CheckItemService {
     public int updateitem(Checkitem checkitem) {
         return checkitemMapper.updateByPrimaryKey(checkitem);
     }
+
+    @Override
+    public int deleteCheckItem(Integer id) {
+        return checkitemMapper.deleteByPrimaryKey(id);
+    }
 }

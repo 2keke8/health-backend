@@ -42,7 +42,7 @@ public class CheckItemController {
     }
 
     @RequestMapping("/api/updateitem")
-    public Result queryitem(@RequestBody Checkitem checkitem){
+    public Result updateitem(@RequestBody Checkitem checkitem){
 
         Result result;
 
@@ -60,5 +60,25 @@ public class CheckItemController {
         return result;
 
     }
+
+    @RequestMapping("/api/deleteitem/{id}")
+    public Result deleteitem(@PathVariable("id")Integer id){
+
+        Result result;
+
+        int i = checkItemService.deleteCheckItem(id);
+
+        if(i <= 0){
+            result = Result.error();
+            result.setMessage("删除检查项失败！");
+        }
+
+        result = Result.success();
+        result.setMessage("删除检查项成功~");
+
+        return result;
+
+    }
+
 
 }
