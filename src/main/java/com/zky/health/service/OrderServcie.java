@@ -1,7 +1,9 @@
 package com.zky.health.service;
 
 import com.zky.health.entity.Order;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -19,6 +21,7 @@ public interface OrderServcie {
 
     int affirmOrder(int orderid);
 
-    int cancelOrder(int orderid);
+    boolean insertExcel(String fileName, MultipartFile file);
 
+    File downloadModel();
 }
