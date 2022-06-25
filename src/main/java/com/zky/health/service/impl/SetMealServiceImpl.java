@@ -36,4 +36,11 @@ public class SetMealServiceImpl implements SetMealService {
         return setmealMapper.updateByPrimaryKey(setmeal);
 
     }
+
+    @Override
+    public int deleteMeal(Integer code) {
+
+        return setmealMapper.deleteByPrimaryKey(code);
+
+    }
 }

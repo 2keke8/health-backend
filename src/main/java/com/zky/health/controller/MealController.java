@@ -4,6 +4,7 @@ import com.zky.health.entity.Result;
 import com.zky.health.entity.Setmeal;
 import com.zky.health.service.SetMealService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,4 +62,24 @@ public class MealController {
         return result;
     }
 
+
+    @RequestMapping("/api/deletemeal/{code}")
+    public Result deletemeal(@PathVariable("code")Integer code){
+
+        Result result;
+
+        int i = setMealService.deleteMeal(code);
+
+        if(i <= 0){
+
+            result = Result.error();
+            result.setMessage("删除套餐失败！");
+
+        }
+
+        result = Result.success();
+        result.setMessage("删除套餐成功~");
+
+        return result;
+    }
 }
