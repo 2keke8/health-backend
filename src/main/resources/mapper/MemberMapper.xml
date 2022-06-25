@@ -15,27 +15,33 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, fileNumber, name, sex, idCard, phoneNumber, regTime, password, email, birthday, 
+    id, fileNumber, name, sex, idCard, phoneNumber, regTime, password, email, birthday,
     remark
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_member
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_member
+    where name = #{memberName}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_member
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zky.health.entity.Member">
-    insert into t_member (id, fileNumber, name, 
-      sex, idCard, phoneNumber, 
-      regTime, password, email, 
+    insert into t_member (id, fileNumber, name,
+      sex, idCard, phoneNumber,
+      regTime, password, email,
       birthday, remark)
-    values (#{id,jdbcType=INTEGER}, #{filenumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{sex,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{phonenumber,jdbcType=VARCHAR}, 
-      #{regtime,jdbcType=DATE}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{filenumber,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+      #{sex,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{phonenumber,jdbcType=VARCHAR},
+      #{regtime,jdbcType=DATE}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
       #{birthday,jdbcType=DATE}, #{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zky.health.entity.Member">

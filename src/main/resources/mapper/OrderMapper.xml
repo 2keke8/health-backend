@@ -13,20 +13,25 @@
     id, member_id, orderDate, orderType, orderStatus, setmeal_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_order
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllOrders"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_order
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_order
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zky.health.entity.Order">
-    insert into t_order (id, member_id, orderDate, 
+    insert into t_order (id, member_id, orderDate,
       orderType, orderStatus, setmeal_id
       )
-    values (#{id,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{orderdate,jdbcType=DATE}, 
+    values (#{id,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{orderdate,jdbcType=DATE},
       #{ordertype,jdbcType=VARCHAR}, #{orderstatus,jdbcType=VARCHAR}, #{setmealId,jdbcType=INTEGER}
       )
   </insert>

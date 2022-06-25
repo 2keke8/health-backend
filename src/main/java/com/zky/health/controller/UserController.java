@@ -6,9 +6,7 @@ import com.zky.health.service.UserService;
 import com.zky.health.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -21,29 +19,40 @@ import java.util.HashMap;
  * @Email: 2540560264@qq.com
  * @Version: 1.0
  */
-
 @CrossOrigin
 @RestController
+//@CrossOrigin(origins = "*",allowCredentials = "true")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @RequestMapping("/login")
-    public Result login(String username, String password){
+    @PostMapping("/api/login")
+    public Result login(@RequestParam("username") String username, @RequestParam("password") String password){
+
+
+        Result result;
 
         if(!StringUtils.hasText(username) || !StringUtils.hasText(password)){
-            return new Result(false,"用户名或密码不能为空哦~");
+            result = Result.error();
+            result.setMessage("用户名和密码不能为空哦~");
+            return result;
         }
+
+
 
         int res = userService.login(username, password);
 
         if(res == 0){
-            return new Result(false,"用户名不存在，请联系管理员~");
+            result = Result.error();
+            result.setMessage("用户名不存在，请联系管理员~");
+            return result;
         }
         //判断密码是否正确
         if(res == -1){
-            return new Result(false,"密码错误，请输入正确密码！");
+            result = Result.error();
+            result.setMessage("密码错误，请输入正确密码！");
+            return result;
         }
 
         //封装返回结果
@@ -54,7 +63,10 @@ public class UserController {
         data.put("user",user);
         data.put("token",token);
         //登录成功
-        return new Result(true,"登录成功，欢迎您~", data);
+        result = Result.success();
+        result.setMessage("登录成功，欢迎您~");
+        result.setData(data);
+        return result;
 
     }
 
