@@ -1,8 +1,11 @@
 package com.zky.health.service;
 
 import com.zky.health.dao.UserMapper;
+import com.zky.health.entity.Member;
 import com.zky.health.entity.Result;
 import com.zky.health.entity.User;
+
+import java.util.List;
 
 /**
  * @Description: 用户业务类
@@ -19,6 +22,7 @@ public interface UserService {
     int login(String username, String password);
 
     User selectUserByname(String username);
+
 
     String createToken(String username);
 

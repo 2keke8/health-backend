@@ -3,6 +3,7 @@ package com.zky.health.controller;
 import com.zky.health.entity.Result;
 import com.zky.health.entity.User;
 import com.zky.health.service.UserService;
+import com.zky.health.utils.HostHolder;
 import com.zky.health.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -27,13 +28,15 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    HostHolder hostHolder;
     @PostMapping("/api/login")
-    public Result login(@RequestParam("username") String username, @RequestParam("password") String password){
+    public Result login(@RequestBody User user){
+
 
 
         Result result;
 
-        if(!StringUtils.hasText(username) || !StringUtils.hasText(password)){
+        if(!StringUtils.hasText(user.getUsername()) || !StringUtils.hasText(user.getPassword())){
             result = Result.error();
             result.setMessage("用户名和密码不能为空哦~");
             return result;
@@ -41,7 +44,7 @@ public class UserController {
 
 
 
-        int res = userService.login(username, password);
+        int res = userService.login(user.getUsername(), user.getPassword());
 
         if(res == 0){
             result = Result.error();
@@ -58,14 +61,17 @@ public class UserController {
         //封装返回结果
         HashMap<String, Object> data = new HashMap<>();
 
-        User user = userService.selectUserByname(username);
-        String token = userService.createToken(username);
-        data.put("user",user);
+        User resuser = userService.selectUserByname(user.getUsername());
+        String token = userService.createToken(resuser.getUsername());
+        data.put("user",resuser);
         data.put("token",token);
         //登录成功
         result = Result.success();
         result.setMessage("登录成功，欢迎您~");
         result.setData(data);
+
+        hostHolder.setUsers(resuser);
+
         return result;
 
     }

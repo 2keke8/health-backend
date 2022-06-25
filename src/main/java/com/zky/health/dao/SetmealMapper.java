@@ -1,7 +1,11 @@
 package com.zky.health.dao;
 
 import com.zky.health.entity.Setmeal;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
+@Mapper
 public interface SetmealMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -10,6 +14,8 @@ public interface SetmealMapper {
     int insertSelective(Setmeal record);
 
     Setmeal selectByPrimaryKey(Integer id);
+
+    List<Setmeal> queryMeals();
 
     int updateByPrimaryKeySelective(Setmeal record);
 

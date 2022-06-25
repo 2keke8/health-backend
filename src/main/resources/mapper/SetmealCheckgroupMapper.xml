@@ -10,10 +10,17 @@
     where setmeal_id = #{setmealId,jdbcType=INTEGER}
       and checkgroup_id = #{checkgroupId,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.zky.health.entity.SetmealCheckgroupKey">
     insert into t_setmeal_checkgroup (setmeal_id, checkgroup_id)
     values (#{setmealId,jdbcType=INTEGER}, #{checkgroupId,jdbcType=INTEGER})
   </insert>
+
+  <delete id="selectGroupIdByMealId" parameterType="java.lang.Integer">
+    select checkgroup_id from t_setmeal_checkgroup
+    where setmeal_id = #{setmealId,jdbcType=INTEGER}
+  </delete>
+
   <insert id="insertSelective" parameterType="com.zky.health.entity.SetmealCheckgroupKey">
     insert into t_setmeal_checkgroup
     <trim prefix="(" suffix=")" suffixOverrides=",">

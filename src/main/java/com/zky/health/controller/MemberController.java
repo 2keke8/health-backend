@@ -5,9 +5,10 @@ import com.zky.health.entity.Result;
 import com.zky.health.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Description: 会员控制器
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version: 1.0
  */
 @RestController
+
 public class MemberController {
 
     @Autowired
@@ -49,6 +51,7 @@ public class MemberController {
 
     @RequestMapping("/api/addmember")
     public Result addMember(@RequestBody Member member){
+
         Result result;
         int i = memberService.insertMember(member);
         if(i <= 0){
@@ -56,13 +59,18 @@ public class MemberController {
             result.setMessage("系统错误，插入失败！");
             return result;
         }
+
+        member.setRegtime(new Date());
+
         result = Result.success();
         result.setMessage("插入会员成功！");
         return result;
     }
 
-    @RequestMapping("/api/deletemember")
-    public Result deleteUser(int memberid){
+    @RequestMapping("/api/deletemember/{memberid}")
+    public Result deleteUser(@PathVariable("memberid") String id){
+
+        int memberid = Integer.parseInt(id);
 
         Result result;
 
@@ -75,6 +83,18 @@ public class MemberController {
 
         result = Result.success();
         result.setMessage("删除会员成功");
+
+        return result;
+    }
+
+    @RequestMapping("/api/queryallmembers")
+    public Result queryAllMembers(){
+
+        List<Member> members = memberService.selectAllMembers();
+
+        Result result = Result.success();
+        result.setData(members);
+        result.setMessage("查询会员列表成功");
 
         return result;
     }

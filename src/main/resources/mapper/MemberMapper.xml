@@ -30,10 +30,18 @@
     from t_member
     where name = #{memberName}
   </select>
+
+  <select id="selectAllMembers" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_member
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_member
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.zky.health.entity.Member">
     insert into t_member (id, fileNumber, name,
       sex, idCard, phoneNumber,

@@ -2,6 +2,8 @@ package com.zky.health.service;
 
 import com.zky.health.entity.Member;
 
+import java.util.List;
+
 /**
  * @Description: 会员业务接口
  * @BelongsProject: health
@@ -14,6 +16,8 @@ import com.zky.health.entity.Member;
 public interface MemberService {
 
     Member queryByName(String memberName);
+
+    List<Member> selectAllMembers();
 
     int insertMember(Member member);
 
