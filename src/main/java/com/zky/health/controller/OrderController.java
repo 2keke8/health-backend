@@ -4,8 +4,11 @@ import com.zky.health.entity.Order;
 import com.zky.health.entity.Result;
 import com.zky.health.service.OrderServcie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -65,5 +68,33 @@ public class OrderController {
 
         return result;
     }
+
+    @PostMapping(value = "/importExcel")
+    public Result ImportExcel(@RequestParam(value = "file") MultipartFile orderfiles) {
+        Result result;
+        if (orderfiles.isEmpty()) {
+            result = Result.error();
+            result.setMessage("上传表格失败！");
+        } else {
+
+            String fileName = orderfiles.getOriginalFilename();
+            if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
+                result = Result.error();
+                result.setMessage("文件格式不正确！");
+
+            }else {
+                boolean OK = orderServcie.insertExcel(fileName, orderfiles);
+                if (OK) {
+                    result = Result.success();
+                    result.setMessage("上传成功！");
+                } else {
+                    result = Result.error();
+                    result.setMessage("发生服务器内部错误，上传失败!");
+                }
+            }
+        }
+        return  result;
+    }
+
 
 }
