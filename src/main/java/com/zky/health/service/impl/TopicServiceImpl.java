@@ -70,6 +70,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
+//    Replies
     public boolean addTopics(ArrayList<Reply> replyList) {
         Integer num = replyList.size();
         Integer res = 0;
@@ -95,6 +96,25 @@ public class TopicServiceImpl implements TopicService {
 
         }
         return res==num;
+    }
+
+    @Override
+    public ArrayList<Topic> getTopicList() {
+
+        ArrayList<Topic> topics =  topicMapper.selectAll();
+        return topics;
+    }
+
+    @Override
+    public boolean addTopic(Topic topic) {
+        Integer num = topicMapper.insertSelective(topic);
+        return num==1;
+    }
+
+    @Override
+    public boolean deleteTopic(int topic_id) {
+        Integer num = topicMapper.deleteByPrimaryKey(topic_id);
+        return num==1;
     }
 
 

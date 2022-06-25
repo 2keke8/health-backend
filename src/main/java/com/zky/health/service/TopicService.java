@@ -18,4 +18,10 @@ public interface TopicService {
     boolean addTopics(ArrayList<Reply> replyList);
 
     boolean deleteTopics(int parseInt, int parseInt1);
+
+    ArrayList<Topic> getTopicList();
+
+    boolean addTopic(Topic topic);
+
+    boolean deleteTopic(int parseInt);
 }

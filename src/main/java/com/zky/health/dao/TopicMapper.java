@@ -20,4 +20,6 @@ public interface TopicMapper {
     Topic selectOneByQuestionId(Integer question_id);
 
     ArrayList<Topic> selectByQuestionId(Integer questionId);
+
+    ArrayList<Topic> selectAll();
 }
