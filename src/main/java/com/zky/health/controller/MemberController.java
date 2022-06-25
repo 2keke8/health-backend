@@ -5,6 +5,7 @@ import com.zky.health.entity.Result;
 import com.zky.health.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,8 +64,8 @@ public class MemberController {
         return result;
     }
 
-    @RequestMapping("/api/deletemember")
-    public Result deleteUser(int memberid){
+    @RequestMapping("/api/deletemember/{memberid}")
+    public Result deleteUser(@PathVariable("memberid") int memberid){
 
         Result result;
 

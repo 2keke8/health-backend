@@ -4,6 +4,7 @@ import com.zky.health.entity.Order;
 import com.zky.health.entity.Result;
 import com.zky.health.service.OrderServcie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,8 +40,8 @@ public class OrderController {
 
     }
 
-    @RequestMapping("/api/orderaffirm")
-    public Result orderAffirm(String orderid){
+    @RequestMapping("/api/orderaffirm/{orderid}")
+    public Result orderAffirm(@PathVariable("orderid") String orderid){
 
         Result result;
 
@@ -66,8 +67,8 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping("/api/cancelorder")
-    public Result cancelorder(String orderid){
+    @RequestMapping("/api/cancelorder/{orderid}")
+    public Result cancelorder(@PathVariable("orderid")String orderid){
 
         Result result;
 
