@@ -41,6 +41,7 @@
     delete from t_member
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.zky.health.entity.Member">
     insert into t_member (id, fileNumber, name,
       sex, idCard, phoneNumber,

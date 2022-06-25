@@ -3,6 +3,7 @@ package com.zky.health.controller;
 import com.zky.health.entity.Result;
 import com.zky.health.entity.User;
 import com.zky.health.service.UserService;
+import com.zky.health.utils.HostHolder;
 import com.zky.health.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -27,6 +28,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    HostHolder hostHolder;
     @PostMapping("/api/login")
     public Result login(@RequestBody User user){
 
@@ -67,6 +69,9 @@ public class UserController {
         result = Result.success();
         result.setMessage("登录成功，欢迎您~");
         result.setData(data);
+
+        hostHolder.setUsers(resuser);
+
         return result;
 
     }

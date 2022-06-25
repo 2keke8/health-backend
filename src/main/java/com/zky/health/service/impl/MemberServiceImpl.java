@@ -4,6 +4,7 @@ import com.zky.health.dao.MemberMapper;
 import com.zky.health.entity.Member;
 import com.zky.health.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,6 +23,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     MemberMapper memberMapper;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
     public Member queryByName(String membername) {
