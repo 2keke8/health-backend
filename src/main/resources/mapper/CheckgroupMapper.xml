@@ -14,21 +14,29 @@
     id, code, name, helpCode, sex, remark, attention
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_checkgroup
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_checkgroup
+    where name = #{name}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from t_checkgroup
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zky.health.entity.Checkgroup">
-    insert into t_checkgroup (id, code, name, 
-      helpCode, sex, remark, 
+    insert into t_checkgroup (id, code, name,
+      helpCode, sex, remark,
       attention)
-    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{helpcode,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+      #{helpcode,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR},
       #{attention,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zky.health.entity.Checkgroup">

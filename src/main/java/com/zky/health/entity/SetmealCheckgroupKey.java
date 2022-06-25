@@ -5,6 +5,11 @@ public class SetmealCheckgroupKey {
 
     private Integer checkgroupId;
 
+    public SetmealCheckgroupKey(Integer setmealId, Integer checkgroupId) {
+        this.setmealId = setmealId;
+        this.checkgroupId = checkgroupId;
+    }
+
     public Integer getSetmealId() {
         return setmealId;
     }
