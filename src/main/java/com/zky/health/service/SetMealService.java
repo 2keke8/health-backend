@@ -17,4 +17,5 @@ public interface SetMealService {
 
     List<Setmeal> queryMeals();
 
+    int updateMeal(Setmeal setmeal);
 }

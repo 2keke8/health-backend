@@ -25,6 +25,15 @@ public class SetMealServiceImpl implements SetMealService {
 
     @Override
     public List<Setmeal> queryMeals() {
+
         return setmealMapper.queryMeals();
+
+    }
+
+    @Override
+    public int updateMeal(Setmeal setmeal) {
+
+        return setmealMapper.updateByPrimaryKey(setmeal);
+
     }
 }
