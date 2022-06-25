@@ -4,7 +4,6 @@ import com.zky.health.dao.UserMapper;
 import com.zky.health.entity.Member;
 import com.zky.health.entity.Result;
 import com.zky.health.entity.User;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

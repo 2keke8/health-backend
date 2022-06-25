@@ -2,6 +2,8 @@ package com.zky.health.dao;
 
 import com.zky.health.entity.Reply;
 
+import java.util.ArrayList;
+
 public interface ReplyMapper {
     int deleteByPrimaryKey(Integer replyId);
 
@@ -16,4 +18,8 @@ public interface ReplyMapper {
     int updateByPrimaryKeyWithBLOBs(Reply record);
 
     int updateByPrimaryKey(Reply record);
+
+    ArrayList<Reply> selectByTopicId(Integer topicId);
+
+    Reply selectByTopicIdAndUserID(Integer topicId, Integer userId);
 }
