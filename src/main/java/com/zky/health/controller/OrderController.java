@@ -4,12 +4,14 @@ import com.zky.health.entity.Order;
 import com.zky.health.entity.Result;
 import com.zky.health.service.OrderServcie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -68,9 +70,11 @@ public class OrderController {
 
         return result;
     }
-
-    @PostMapping(value = "/importExcel")
-    public Result ImportExcel(@RequestParam(value = "file") MultipartFile orderfiles) {
+    /*
+    * 上传预约表格
+    * */
+    @PostMapping(value = "/api/importExcel")
+    public Result ImportExcel(@RequestParam(value = "orderfiles") MultipartFile orderfiles) {
         Result result;
         if (orderfiles.isEmpty()) {
             result = Result.error();
@@ -95,6 +99,26 @@ public class OrderController {
         }
         return  result;
     }
+
+    /*
+    * 下载代码模板
+    * */
+    @PostMapping(value = "/api/downloadModel")
+    public Result downloadModel(){
+        Result result;
+        File model =  orderServcie.downloadModel();
+        if(ObjectUtils.isEmpty(model)){
+            result = Result.error();
+            result.setMessage("出现未知错误！模板下载失败");
+        }else{
+            result = Result.success();
+            result.setData(model);
+            result.setMessage("获取模板成功！！！");
+        }
+
+        return  result;
+    }
+
 
 
 }
