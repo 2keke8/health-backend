@@ -101,7 +101,7 @@ public class OrderController {
     }
 
     /*
-    * 下载代码模板
+    * 下载表格模板
     * */
     @PostMapping(value = "/api/downloadModel")
     public Result downloadModel(){
