@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: 会员控制器
@@ -129,6 +126,14 @@ public class MemberController {
             int year = birthday.getYear();
             age = currentYear - year + 1;
             resMap.put("age",age);
+            String[] strings = {"2022/4/1","2022/5/22","2022/6/26","2022/6/27","2022/6/26","2022/6/27","2022/6/26","2022/6/27","2022/6/26","2022/6/27"};
+            resMap.put("reg",strings[new Random().nextInt(9)]);
+            if(new Random().nextInt(2)==1){
+                resMap.put("flag","启用");
+            }else{
+                resMap.put("flag","禁用");
+            }
+
             resMap.put("member",member);
             resList.add(resMap);
         }
