@@ -1,11 +1,9 @@
 package com.zky.health.config;
 
-import com.zky.health.intercepter.DataInterceptor;
 import com.zky.health.intercepter.QuestionIntercepter;
 import com.zky.health.intercepter.UserIntercepter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -13,22 +11,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 @Configuration
 public class WebMvcConfigurer extends WebMvcConfigurationSupport {
 
+    @Autowired
+    UserIntercepter userIntercepter;
 
     @Autowired
-    DataInterceptor dataInterceptor;
+    QuestionIntercepter questionIntercepter;
 
-//   @Override
-//    protected void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**").allowedOriginPatterns("*")
-//                .allowCredentials(true).allowedMethods("*").maxAge(3600);
-//    }
 
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-
-        registry.addInterceptor(dataInterceptor)
-                .excludePathPatterns("/api/login","/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg")
-                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**");
 
         //addPathPatterns拦截的路径
         String[] addPathPatterns1 = {
@@ -40,7 +31,8 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
                 "/api/login","/api/system/**","/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**"
         };
         //创建用户拦截器对象并指定其拦截的路径和排除的路径
-        registry.addInterceptor(new UserIntercepter()).addPathPatterns(addPathPatterns1).excludePathPatterns(excludePathPatterns1);
+        registry.addInterceptor(userIntercepter).addPathPatterns(addPathPatterns1).excludePathPatterns(excludePathPatterns1);
+
 
         //addPathPatterns拦截的路径
         String[] addPathPatterns2 = {
@@ -51,7 +43,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
                 "/api/login","/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**"
         };
         //创建用户拦截器对象并指定其拦截的路径和排除的路径
-        registry.addInterceptor(new QuestionIntercepter()).addPathPatterns(addPathPatterns2).excludePathPatterns(excludePathPatterns2);
+        registry.addInterceptor(questionIntercepter).addPathPatterns(addPathPatterns2).excludePathPatterns(excludePathPatterns2);
 
     }
     @Override

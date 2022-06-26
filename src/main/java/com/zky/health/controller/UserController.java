@@ -2,9 +2,9 @@ package com.zky.health.controller;
 
 import com.zky.health.entity.Result;
 import com.zky.health.entity.User;
+import com.zky.health.service.DataService;
 import com.zky.health.service.UserService;
 import com.zky.health.utils.HostHolder;
-import com.zky.health.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 /**
- * @Description:
+ * @description：用户控制器
  * @BelongsProject: health
  * @BelongsPackage: com.zky.health.controller
  * @Author: KeYu-Zhao
@@ -32,23 +32,30 @@ public class UserController {
 
     @Autowired
     HostHolder hostHolder;
+
+    @Autowired
+    DataService dataService;
+
+    /**
+     * @description：用户登录验证
+     * @param user
+     * @return：包含用户信息、token
+     */
     @PostMapping("/api/login")
     public Result login(@RequestBody User user){
 
 
-
         Result result;
 
+        //判断用户名和密码是否为空
         if(!StringUtils.hasText(user.getUsername()) || !StringUtils.hasText(user.getPassword())){
             result = Result.error();
             result.setMessage("用户名和密码不能为空哦~");
             return result;
         }
 
-
-
+        //0：用户不存在  -1：密码错误 >0：验证成功
         int res = userService.login(user.getUsername(), user.getPassword());
-
         if(res == 0){
             result = Result.error();
             result.setMessage("用户名不存在，请联系管理员~");
@@ -61,22 +68,27 @@ public class UserController {
             return result;
         }
 
+
+
         //封装返回结果
         HashMap<String, Object> data = new HashMap<>();
-
         User resuser = userService.selectUserByname(user.getUsername());
+        //生成token
         String token = userService.createToken(resuser.getUsername());
         data.put("user",resuser);
         data.put("token",token);
+
+
+        // 检查结束， 没有问题， 记录用户登录信息
+        // 记录UV、DAU
+        dataService.recordMemberDAU(resuser.getId());
+        dataService.recordMemberUV(String.valueOf(resuser.getId()));
+
         //登录成功
         result = Result.success();
         result.setMessage("登录成功，欢迎您~");
         result.setData(data);
-
-        hostHolder.setUsers(resuser);
-
         return result;
-
     }
 
 }

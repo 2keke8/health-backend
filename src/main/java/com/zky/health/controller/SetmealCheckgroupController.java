@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @Description:
+ * @description：套餐项目组管理
  * @BelongsProject: health
  * @BelongsPackage: com.zky.health.controller
  * @Author: KeYu-Zhao
@@ -23,6 +23,12 @@ public class SetmealCheckgroupController {
     @Autowired
     SetmealCheckgroupKeyService setmealCheckgroupKeyService;
 
+    /**
+     * @description：为套餐添加项目组
+     * @param setmealId 套餐id
+     * @param groupname 项目组名字
+     * @return
+     */
     @GetMapping("/api/addgroup/{setmealId}/{groupname}")
     public Result addgroup(@PathVariable("setmealId")Integer setmealId,@PathVariable("groupname")String groupname){
 

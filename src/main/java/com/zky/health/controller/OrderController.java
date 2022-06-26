@@ -13,7 +13,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * @Description:
+ * @description：预约管理
  * @BelongsProject: health
  * @BelongsPackage: com.zky.health.controller
  * @Author: KeYu-Zhao
@@ -28,6 +28,10 @@ public class OrderController {
     @Autowired
     OrderServcie orderServcie;
 
+    /**
+     * @description：查询所有预约列表
+     * @return：包含List订单列表
+     */
     @GetMapping("/api/queryorders")
     public Result selectAllOrders(){
 

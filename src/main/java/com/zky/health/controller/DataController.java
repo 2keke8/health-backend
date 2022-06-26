@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
- * @Description:
+ * @description：统计数据
  * @BelongsProject: community
  * @BelongsPackage: com.zky.controller
  * @Author: KeYu-Zhao
@@ -27,8 +28,13 @@ public class DataController {
     @Autowired
     private DataService dataService;
 
-    // 统计活跃用户
-    @GetMapping(path = "/api/data/dau")
+    /**
+     * @description：查询某个时间段的会员信息1.0
+     * @param start
+     * @param end
+     * @return：返回每天对应的数据量，以及该时间段的总数
+     */
+    @GetMapping(path = "/api/data/memberDau")
     public Result getDAU(@DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                          @DateTimeFormat(pattern = "yyyy-MM-dd") Date end) {
 
@@ -45,6 +51,33 @@ public class DataController {
         result = Result.success();
         result.setMessage("查询活跃用户成功");
         result.setData(MemberDau);
+
+        return result;
+    }
+
+    /**
+     * @description：查询某个时间段的会员信息2.0
+     * @param start 开始时间
+     * @param end 结束时间
+     * @return：返回每天对应的数据量，以及该时间段的总数
+     */
+    @GetMapping(path = "/api/data/memberDau1")
+    public Result getDAU1(@DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
+                         @DateTimeFormat(pattern = "yyyy-MM-dd") Date end) {
+
+        Result result;
+
+        if(start == null || end == null){
+            result = Result.error();
+            result.setMessage("查询失败，请联系管理员！");
+            return result;
+        }
+
+        HashMap<String, Integer> hashMap = dataService.calculateMemberDAU1(start, end, 1);
+
+        result = Result.success();
+        result.setMessage("查询活跃用户成功");
+        result.setData(hashMap);
 
         return result;
     }
