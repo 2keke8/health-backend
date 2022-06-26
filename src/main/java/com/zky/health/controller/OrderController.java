@@ -158,13 +158,13 @@ public class OrderController {
      * @param date
      * @return
      */
-    @GetMapping("/api/queryordersettingbyDate")
+    @GetMapping("/api/queryordersettingbydate")
     public Result queryOrderSettingByDate(Date date){
 
         Result result;
 
         if(date == null){
-            result = Result.error()；
+            result = Result.error();
             result.setMessage("请选择日期！");
             return result;
         }

@@ -80,10 +80,10 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectByDate" parameterType="java.lang.Date" resultMap="BaseResultMap">
+  <select id="selectByDate" parameterType="java.util.Date" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from t_ordersetting
-    where orderdate = #{Date,jdbcType=DATE}
+    where orderdate = #{orderdate,jdbcType=DATE}
   </select>
 </mapper>
