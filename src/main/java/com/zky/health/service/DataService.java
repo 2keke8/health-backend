@@ -3,8 +3,6 @@ package com.zky.health.service;
 import com.zky.health.constant.MyConstant;
 import com.zky.health.dao.AdviceMapper;
 import com.zky.health.dao.OrderMapper;
-import com.zky.health.entity.Reply;
-import org.apache.commons.math3.optim.InitialGuess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -12,7 +10,6 @@ import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -44,8 +41,6 @@ public class DataService extends MyConstant{
     @Resource
     QuestionService questionService;
 
-    @Resource
-    TopicService topicService;
     @Autowired
     RedisTemplate redisTemplate;
 
@@ -82,10 +77,10 @@ public class DataService extends MyConstant{
     }
 
     // 将指定用户计入DAU
-    public void recordMemberDAU(int memberid) {
+    public void recordMemberDAU(int userid) {
         String redisKey = MyConstant.getDAUKey(df.format(new Date()));
         //memberid必须为long
-        redisTemplate.opsForValue().setBit(redisKey, (long)memberid, true);
+        redisTemplate.opsForValue().setBit(redisKey, userid, true);
     }
 
     public long calculateMemberDAU(String time){

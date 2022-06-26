@@ -62,12 +62,7 @@ public class UserController {
             return result;
         }
 
-        // 检查结束， 没有问题， 记录用户登录信息
-        dataService.recordMemberUV(String.valueOf(user.getId()));
-        // 记录DAU
-        if (user != null) {
-            dataService.recordMemberDAU(user.getId().intValue());
-        }
+
 
         //封装返回结果
         HashMap<String, Object> data = new HashMap<>();
@@ -75,6 +70,12 @@ public class UserController {
         String token = userService.createToken(resuser.getUsername());
         data.put("user",resuser);
         data.put("token",token);
+
+
+        // 检查结束， 没有问题， 记录用户登录信息
+        // 记录UV、DAU
+        dataService.recordMemberDAU(resuser.getId());
+        dataService.recordMemberUV(String.valueOf(resuser.getId()));
 
         //登录成功
         result = Result.success();
