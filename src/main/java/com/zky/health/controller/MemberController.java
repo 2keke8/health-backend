@@ -89,6 +89,30 @@ public class MemberController {
         return result;
     }
 
+    /**
+     * 批量删除会员
+     * @param membersId 会员的id
+     * @return 返回影响的行数
+     */
+    @RequestMapping("/api/deletemembers")
+    public Result deleteUser(@RequestBody List<Integer> membersId){
+
+
+        Result result;
+
+        int i = memberService.deleteMembers(membersId);
+        if(i <= 0){
+            result = Result.error();
+            result.setMessage("批量删除会员失败！");
+            return result;
+        }
+
+        result = Result.success();
+        result.setMessage("批量删除会员成功");
+
+        return result;
+    }
+
     @RequestMapping("/api/queryallmembers")
     public Result queryAllMembers(){
 

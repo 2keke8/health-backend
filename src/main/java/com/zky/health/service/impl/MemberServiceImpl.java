@@ -46,4 +46,16 @@ public class MemberServiceImpl implements MemberService {
     public int deleteMember(int userid) {
         return memberMapper.deleteByPrimaryKey(userid);
     }
+
+    @Override
+    public int deleteMembers(List<Integer> membersId) {
+
+        int res = 0;
+
+        for (Integer integer : membersId) {
+            res += deleteMember(integer);
+        }
+
+        return res;
+    }
 }
