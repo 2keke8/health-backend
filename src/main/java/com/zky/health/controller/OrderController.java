@@ -1,8 +1,10 @@
 package com.zky.health.controller;
 
 import com.zky.health.entity.Order;
+import com.zky.health.entity.Ordersetting;
 import com.zky.health.entity.Result;
 import com.zky.health.service.OrderServcie;
+import com.zky.health.service.OrderSettingService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -27,6 +29,9 @@ public class OrderController {
 
     @Autowired
     OrderServcie orderServcie;
+
+    @Autowired
+    OrderSettingService orderSettingService;
 
     /**
      * @description：查询所有预约列表
@@ -123,5 +128,28 @@ public class OrderController {
     }
 
 
+    /**
+     * @description：插入预约设置
+     * @param ordersetting
+     * @return
+     */
+    @PostMapping("/api/addordersetting")
+    public Result addOrderSetting(@RequestBody Ordersetting ordersetting){
+
+        Result result;
+
+        int i = orderSettingService.insertOrderSetting(ordersetting);
+
+        if(i <= 0){
+            result = Result.error();
+            result.setMessage("插入失败，请联系管理员！");
+            return result;
+        }
+
+        result = Result.success();
+        result.setMessage("插入成功~");
+
+        return result;
+    }
 
 }
