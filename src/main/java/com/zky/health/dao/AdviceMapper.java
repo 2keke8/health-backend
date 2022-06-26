@@ -4,6 +4,8 @@ import com.zky.health.entity.Advice;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
+import java.util.Collection;
+
 @Mapper
 public interface AdviceMapper {
     int deleteByPrimaryKey(Integer adviceId);
@@ -21,4 +23,6 @@ public interface AdviceMapper {
     int updateByPrimaryKey(Advice record);
 
     ArrayList<Advice> selectAll();
+
+    ArrayList<Advice> selectByStu(String stu);
 }

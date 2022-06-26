@@ -26,6 +26,15 @@
     where 1=1
   </select>
 
+  <select id="selectByStu" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_advice
+    where orderStatus = #{stu,jdbcType=CHAR}
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />

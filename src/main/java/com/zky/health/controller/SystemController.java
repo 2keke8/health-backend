@@ -29,10 +29,8 @@ public class SystemController {
     * */
 
     /*
-    * 查询所有的问题做展示
-    * */
-
-
+     * 查询所有的问题做展示
+     * */
     @RequestMapping(value = "queryalltopic")
     public Result QueryAllTopic(){
         Result result;

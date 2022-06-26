@@ -13,7 +13,7 @@ public interface TopicService {
 
     ArrayList<HashMap> getDetailsReplyByUserId(Integer userId, Integer questionId);
 
-    HashMap<String, Object> getTopic(int parseInt, int parseInt1);
+    HashMap<String, Object> getTopic(int userID, int questionID);
 
     boolean addTopics(ArrayList<Reply> replyList);
 

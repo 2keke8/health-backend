@@ -22,7 +22,8 @@ public class QuestionIntercepter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
-        String tokenName = "token";
+        String tokenName = "Authorization";
+//        Authentication
         // 尝试从header中取token
         String token = request.getHeader(tokenName);
         //尝试从参数中取token

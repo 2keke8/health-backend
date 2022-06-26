@@ -4,6 +4,8 @@ import com.zky.health.entity.Member;
 import com.zky.health.entity.Order;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Mapper
@@ -21,4 +23,6 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+
+    ArrayList<Order> selectByStu(String stu);
 }

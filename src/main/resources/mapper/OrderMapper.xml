@@ -18,6 +18,14 @@
     from t_order
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByStu" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_order
+    where orderStatus = #{stu,jdbcType=CHAR}
+  </select>
+
   <select id="selectAllOrders"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

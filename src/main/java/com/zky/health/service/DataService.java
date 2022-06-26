@@ -1,6 +1,10 @@
 package com.zky.health.service;
 
 import com.zky.health.constant.MyConstant;
+import com.zky.health.dao.AdviceMapper;
+import com.zky.health.dao.OrderMapper;
+import com.zky.health.entity.Reply;
+import org.apache.commons.math3.optim.InitialGuess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -9,11 +13,9 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description:
@@ -27,6 +29,20 @@ import java.util.List;
 @Service
 public class DataService {
 
+    @Resource
+    AdviceMapper adviceMapper;
+    @Resource
+    OrderMapper orderMapper;
+    @Resource
+    AdviceService adviceService;
+    @Resource
+    OrderServcie orderServcie;
+    @Resource
+    MemberService memberService;
+    @Resource
+    QuestionService questionService;
+    @Resource
+    TopicService topicService;
     @Autowired
     RedisTemplate redisTemplate;
 
@@ -96,4 +112,43 @@ public class DataService {
         });
     }
 
+    /*
+    * 获取工作台的信息
+    *
+    *   今日预约人数：今日未执行：今日已执行：今日评估人数：
+    * 预约人数-： 未执行-： 已执行-： 评估人数-
+    * 问卷评估- 预约人数- 干预方案- 干预追踪-没有
+    * 今日新增 今日登录 会员总数-
+    * */
+    public HashMap<String, Object> getWorkInfo() {
+        HashMap<String,Object> workInfo = new HashMap<>();
+//        会员总数量
+        Integer memberNum = memberService.selectAllMembers().size();
+//        问卷总数量
+        Integer questionNum =   questionService.getReplyListByType(1).size()+
+                                questionService.getReplyListByType(2).size()+
+                                questionService.getReplyListByType(3).size();
+//        预约总人数
+        Integer orderNum = orderServcie.selectAllOrders().size();
+
+//        预约未执行
+        Integer orderUnNum = orderMapper.selectByStu("未到诊").size();
+//        已执行
+        Integer orderHadNum = orderNum - orderUnNum;
+//        今日登录
+        Long todayAdd = calculateMemberDAU(new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24), new Date());
+//        干预方案总数
+        Integer adviceNum = adviceService.getAlladvice().size();
+        //        TODO 统计日活
+
+//        添加到返回结果
+        workInfo.put("memberNum",memberNum);
+        workInfo.put("questionNum",questionNum);
+        workInfo.put("orderNum",orderNum);
+        workInfo.put("adviceNum",adviceNum);
+        workInfo.put("orderUnNum",orderUnNum);
+        workInfo.put("orderHadNum",orderHadNum);
+        workInfo.put("todayAdd",todayAdd);
+        return workInfo;
+    }
 }
