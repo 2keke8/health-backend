@@ -46,13 +46,22 @@ public class DataService extends MyConstant{
 
     private SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 
-    // 将指定ip计入uv
+    /**
+     * @description：将指定ip计入uv
+     * @param memberid
+     */
     public void recordMemberUV(String memberid) {
         String redisKey = MyConstant.getUVKey(df.format(new Date()));
         redisTemplate.opsForHyperLogLog().add(redisKey, memberid);
     }
 
-    // 统计指定日期范围内的uv
+
+    /**
+     * @description：统计指定日期范围内的uv
+     * @param start
+     * @param end
+     * @return：对应时间段的会员总数
+     */
     public long calculateMemberUV(Date start, Date end) {
         if (start == null || end == null) {
             throw new IllegalArgumentException("参数不能为空!");
@@ -76,13 +85,22 @@ public class DataService extends MyConstant{
         return redisTemplate.opsForHyperLogLog().size(redisKey);
     }
 
-    // 将指定用户计入DAU
+
+    /**
+     * @description：将指定用户计入DAU
+     * @param userid
+     */
     public void recordMemberDAU(int userid) {
         String redisKey = MyConstant.getDAUKey(df.format(new Date()));
         //memberid必须为long
         redisTemplate.opsForValue().setBit(redisKey, userid, true);
     }
 
+    /**
+     * @description：查询某天的会员总数
+     * @param time
+     * @return：当天的会员总数
+     */
     public long calculateMemberDAU(String time){
         if(!StringUtils.hasText(time)){
             throw new IllegalArgumentException("参数不能为空!");
@@ -102,7 +120,7 @@ public class DataService extends MyConstant{
      * @param start
      * @param end
      * @param flag
-     * @return 返回每天对应的会员数据量
+     * @return 返回每天对应的会员数据量，以及会员总数
      */
     public HashMap<String, Integer> calculateMemberDAU1(Date start, Date end, int flag) {
 
@@ -130,7 +148,13 @@ public class DataService extends MyConstant{
 
     }
 
-    // 统计指定日期范围内的DAU 返回总数
+
+    /**
+     * @description：统计指定日期范围内的DAU 返回总数
+     * @param start
+     * @param end
+     * @return：返回时间段的总数
+     */
     public long calculateMemberDAU(Date start, Date end) {
         if (start == null || end == null) {
             throw new IllegalArgumentException("参数不能为空!");
