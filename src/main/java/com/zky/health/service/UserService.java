@@ -5,6 +5,8 @@ import com.zky.health.entity.Member;
 import com.zky.health.entity.Result;
 import com.zky.health.entity.User;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,4 +29,10 @@ public interface UserService {
     String createToken(String username);
 
     int selectUserRoleId(int userid);
+
+    boolean updateUser(User user, String symbol);
+
+    HashMap<String,Object> selectAll();
+
+    boolean deleteUser(Integer id);
 }

@@ -25,6 +25,7 @@ public class workTaiController {
     @GetMapping(value = "")
     public Result getInfo(){
         Result result;
+        //获取工作台信息
         HashMap<String,Object> resMap = dataService.getWorkInfo();
         if(ObjectUtils.isEmpty(resMap)){
             result = Result.error();

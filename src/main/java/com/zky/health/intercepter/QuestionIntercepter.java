@@ -10,6 +10,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -45,7 +47,11 @@ public class QuestionIntercepter implements HandlerInterceptor {
         }
         //解析token
         if ( !JwtUtil.checkToken(token)) {
-            throw new Exception( "用户未登录");
+            HashMap<String,String> map = new HashMap();
+            map.put("code","400001");
+            map.put("msg","用户未登录");
+            response.getWriter().write(map.toString());
+            return  false;
         }
 
         //解析token
@@ -53,6 +59,11 @@ public class QuestionIntercepter implements HandlerInterceptor {
         Integer role;
         try {
             Claims claims = JwtUtil2.parseJWT(token);
+            Date expiration = claims.getExpiration();
+            Date now = new Date();
+            if(expiration.getTime() - now.getTime() < 0){
+                throw new Exception( "请重新登录！");
+            }
             role = (Integer) claims.get("role");
         } catch (Exception e) {
             e.printStackTrace();

@@ -97,9 +97,6 @@ public class OrderServiceImpl implements OrderServcie {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 orderDate = formatter.format(d);
             }
-
-
-
             String orderType = "";
             if (row.getCell(2) == null) {
                 orderType = "";

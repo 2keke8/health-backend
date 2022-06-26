@@ -106,7 +106,6 @@ public class QuestionController {
         return  result;
     }
     /*
-    TODO 测试
     * 新增测评(用户功能，做测评)
     * */
     @PostMapping("addquestion")
@@ -125,7 +124,6 @@ public class QuestionController {
     }
 
     /*
-//    TODO 测试
     * 删除测评报告
     * */
     @GetMapping("deletequestion/{user_id}/{question_id}")

@@ -22,6 +22,7 @@ public class AdviceServiceImpl implements AdviceService {
 
     @Override
     public String getContentByUserid(Integer userID) {
+//
         Advice advice = adviceMapper.selectByPrimaryKey(userID);
         if(ObjectUtils.isEmpty(advice)){
             return "";

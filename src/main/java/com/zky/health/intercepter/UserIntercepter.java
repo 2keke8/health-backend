@@ -17,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -82,6 +83,12 @@ public class UserIntercepter implements HandlerInterceptor {
             Integer role;
             try {
                 Claims claims = JwtUtil2.parseJWT(token);
+                Date expiration = claims.getExpiration();
+                Date now = new Date();
+                if(expiration.getTime() - now.getTime() < 0){
+                    throw new Exception( "请重新登录！");
+                }
+
                 role = (Integer) claims.get("role");
             } catch (Exception e) {
                 e.printStackTrace();

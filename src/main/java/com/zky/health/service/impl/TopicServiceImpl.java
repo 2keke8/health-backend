@@ -95,7 +95,7 @@ public class TopicServiceImpl implements TopicService {
             }
 
         }
-        return res==num;
+        return res>0;
     }
 
     @Override

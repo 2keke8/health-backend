@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @description：会员设置
@@ -152,6 +149,20 @@ public class MemberController {
             // 计算年龄， 当前年份减去生日的年份加1
             age = currentYear - year + 1;
             resMap.put("age",age);
+            String[] strings = {"2022/4/1","2022/5/22","2022/6/26","2022/6/27","2022/6/26","2022/6/27","2022/6/26","2022/6/27","2022/6/26","2022/6/27"};
+            resMap.put("reg",strings[new Random().nextInt(9)]);
+            if(new Random().nextInt(2)==1){
+                resMap.put("flag","报告已上传");
+            }else{
+                resMap.put("flag","报告未上传");
+            }
+
+            if(new Random().nextInt(2)==1){
+                resMap.put("taocan","普通体检项");
+            }else{
+                resMap.put("taocan","豪华体检项");
+            }
+
             resMap.put("member",member);
             resList.add(resMap);
         }

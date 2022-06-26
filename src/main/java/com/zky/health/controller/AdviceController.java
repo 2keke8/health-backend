@@ -46,19 +46,22 @@ public class AdviceController {
         Result result ;
         ArrayList<Advice> adviceDetails;
         ArrayList<HashMap> resList= new ArrayList<>();
-
+//        得到方案列表
         adviceDetails = adviceService.getAlladvice();
         if(ObjectUtils.isEmpty(adviceDetails)){
             result =Result.error();
         }else{
             for(Advice advice: adviceDetails){
+                //遍历方案
                 HashMap<String, Object> details = new HashMap<>();
                 User user = userMapper.selectByPrimaryKey(advice.getUserId());
+                //查出name
                 String username = user.getUsername();
                 String healtherName = userMapper.selectByPrimaryKey(advice.getHealtherId()).getUsername();
                 details.put("advice",advice);
                 details.put("user_name",username);
                 details.put("healther_name",healtherName);
+                //封装到map里 添加到返回列表
                 resList.add(details);
             }
             result = Result.success();

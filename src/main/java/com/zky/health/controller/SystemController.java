@@ -2,8 +2,9 @@ package com.zky.health.controller;
 
 import com.zky.health.entity.Result;
 import com.zky.health.entity.Topic;
+import com.zky.health.entity.User;
 import com.zky.health.service.TopicService;
-import io.swagger.annotations.Api;
+import com.zky.health.service.UserService;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,9 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping(value = "/api/system/")
-@Api(tags = "系统控制相关接口")
 public class SystemController {
-
+    @Resource
+    UserService userService;
     @Resource
     TopicService topicService;
     /*
@@ -68,7 +69,7 @@ public class SystemController {
     * 删除问题
     * */
 
-    @GetMapping(value = "deletetopic")
+    @PostMapping(value = "deletetopic")
     public Result deleteTopic(String topic_id){
         Result result;
         boolean OK = topicService.deleteTopic(Integer.parseInt(topic_id));
@@ -81,6 +82,67 @@ public class SystemController {
     }
 
     /*
-    * 修改问题
+    * 用户管理
     * */
+
+    /*
+    * 添加/修改用户
+    * */
+    @PostMapping(value = "user/{symbol}")
+    public Result addUser(@RequestBody User user,
+                          @PathVariable(value = "symbol") String symbol){
+        Result result ;
+        if("add".equals(symbol) || "update".equals(symbol)){
+            boolean OK = userService.updateUser(user,symbol);
+            if(OK){
+                result = Result.success();
+                result.setMessage("更新用户信息成功");
+            }else{
+                result = Result.error();
+                result.setMessage("发生错误!更新用户失败!");
+            }
+        }else{
+            result = Result.error();
+            result.setMessage("请求路径错误!");
+        }
+
+        return result;
+    }
+    /*
+    * 查询用户
+    * */
+    @GetMapping(value = "user/")
+    public Result queryUser(){
+        Result result ;
+        //查询用户列表
+        HashMap<String, Object> map = userService.selectAll();
+        if(ObjectUtils.isEmpty(map)){
+            result = Result.error();
+            result.setMessage("查询用户信息失败！");
+        }else{
+            result = Result.success();
+            result.setData(map);
+        }
+        return result;
+    }
+
+    /*
+    * 删除用户
+    * */
+    @DeleteMapping(value = "user/{id}")
+    public Result deleteUser(@PathVariable(value = "id") Integer id){
+        Result result ;
+        boolean OK = userService.deleteUser( id);
+        if(OK){
+            result = Result.success();
+            result.setMessage("删除成功");
+        }else{
+            result = Result.error();
+            result.setMessage("删除失败");
+        }
+
+        return result;
+    }
+
+
 }
