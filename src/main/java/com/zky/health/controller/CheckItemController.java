@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @Description:
+ * @description：检查项管理
  * @BelongsProject: health
  * @BelongsPackage: com.zky.health.controller
  * @Author: KeYu-Zhao

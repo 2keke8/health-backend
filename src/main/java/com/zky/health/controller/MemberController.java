@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * @Description: 会员控制器
+ * @description：会员设置
  * @BelongsProject: health
  * @BelongsPackage: com.zky.health.controller
  * @Author: KeYu-Zhao

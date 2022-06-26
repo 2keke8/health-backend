@@ -2,6 +2,7 @@ package com.zky.health.controller;
 
 import com.zky.health.entity.Result;
 import com.zky.health.service.DataService;
+import io.swagger.annotations.Api;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,8 @@ import java.util.HashMap;
  * @description：工作台
  */
 @RestController
-    @RequestMapping(value = "/api/work/")
+@RequestMapping(value = "/api/work/")
+@Api(tags = "工作台接口")
 public class workTaiController {
     @Resource
     DataService dataService;

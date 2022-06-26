@@ -18,7 +18,7 @@ import java.util.UUID;
 public class JwtUtil {
 
     //设置时间为一分钟
-    private static long time = 1000*60;
+    private static long time = 1000*60*60;
     private static String signature = "zhaokeyu007.";
 
     public static String createToken(String username,int role,String subject){

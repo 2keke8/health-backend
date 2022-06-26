@@ -11,7 +11,9 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -26,8 +28,8 @@ import java.util.*;
  * @Email: 2540560264@qq.com
  * @Version: 1.0
  */
-@Service
-public class DataService {
+@Component
+public class DataService extends MyConstant{
 
     @Resource
     AdviceMapper adviceMapper;
@@ -41,6 +43,7 @@ public class DataService {
     MemberService memberService;
     @Resource
     QuestionService questionService;
+
     @Resource
     TopicService topicService;
     @Autowired
@@ -81,10 +84,58 @@ public class DataService {
     // 将指定用户计入DAU
     public void recordMemberDAU(int memberid) {
         String redisKey = MyConstant.getDAUKey(df.format(new Date()));
-        redisTemplate.opsForValue().setBit(redisKey, memberid, true);
+        //memberid必须为long
+        redisTemplate.opsForValue().setBit(redisKey, (long)memberid, true);
     }
 
-    // 统计指定日期范围内的DAU
+    public long calculateMemberDAU(String time){
+        if(!StringUtils.hasText(time)){
+            throw new IllegalArgumentException("参数不能为空!");
+        }
+        return (long) redisTemplate.execute(new RedisCallback() {
+            @Override
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+                Long aLong = connection.bitCount(time.getBytes());
+                return aLong;
+            }
+        });
+    }
+
+    /**
+     *
+     * @descreption 查询时间段的会员数
+     * @param start
+     * @param end
+     * @param flag
+     * @return 返回每天对应的会员数据量
+     */
+    public HashMap<String, Integer> calculateMemberDAU1(Date start, Date end, int flag) {
+
+        long counts = calculateMemberDAU(start, end);
+        //返回map数据
+        HashMap<String, Integer> hashMap = new HashMap<>();
+
+        String dfstart = df.format(start);
+        String dfend = df.format(start);
+
+        int startInt = Integer.parseInt(dfstart);
+        int endInt = Integer.parseInt(dfend);
+
+        for (int i = startInt; i <= endInt; i++) {
+
+            String time = String.valueOf(i);
+            long dau = calculateMemberDAU(String.valueOf(i));
+            hashMap.put(time, (int) dau);
+
+        }
+
+        hashMap.put("members", (int) counts);
+
+        return hashMap;
+
+    }
+
+    // 统计指定日期范围内的DAU 返回总数
     public long calculateMemberDAU(Date start, Date end) {
         if (start == null || end == null) {
             throw new IllegalArgumentException("参数不能为空!");

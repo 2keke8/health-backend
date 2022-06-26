@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 公共异常处理类
+ *
  * @author 戴金华
+ * @description：全局异常处理
  */
 @ControllerAdvice
 public class BaseExceptionHandler {

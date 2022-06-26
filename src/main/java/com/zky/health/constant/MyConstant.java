@@ -15,7 +15,6 @@ import java.util.Map;
  */
 public class MyConstant {
     public static final String LOGIN_TOKEN = "login_tokin";
-
     private static final String PREFIX_UV = "memberuv";
     private static final String PREFIX_DAU = "memberdau";
 

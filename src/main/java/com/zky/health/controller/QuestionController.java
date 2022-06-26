@@ -9,10 +9,7 @@ import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -37,7 +34,7 @@ public class QuestionController {
     /*
     * 查询所有测评报告
     * */
-    @RequestMapping("querybodytests")
+    @GetMapping("querybodytests")
     public Result QueryBodyTests(Integer question_id){
 
         Result result;
@@ -57,7 +54,7 @@ public class QuestionController {
 *
 * 查看详细报告
 * */
-    @RequestMapping("queryreplydetails/{user_id}/{question_id}")
+    @GetMapping("queryreplydetails/{user_id}/{question_id}")
     public Result QueryDetails(@PathVariable(value = "user_id") String UserId,
                                @PathVariable(value = "question_id") String QuestionId){
         Result result;
@@ -77,7 +74,7 @@ public class QuestionController {
     * 查询是否可做测评（用户功能，做测评）
     * ###### 查询是否可做测评（用户功能，做测评）
     * */
-    @RequestMapping("queryquestionstu/{user_id}/{question_id}")
+    @GetMapping("queryquestionstu/{user_id}/{question_id}")
     public Result QueryTestOk(@PathVariable(value = "user_id")String userId,
                               @PathVariable(value = "question_id")String questionId){
         Result result;
@@ -95,7 +92,7 @@ public class QuestionController {
     /*
     * 查询测评内容(用户功能，做测评)
     * */
-    @RequestMapping("querytestbyid/{user_id}/{question_id}")
+    @GetMapping("querytestbyid/{user_id}/{question_id}")
     public Result QueryTestContent(@PathVariable(value = "user_id")String userId,
                                    @PathVariable(value = "question_id")String questionId){
         HashMap<String,Object> topics = topicService.getTopic(Integer.parseInt(userId),Integer.parseInt(questionId));
@@ -112,7 +109,7 @@ public class QuestionController {
     TODO 测试
     * 新增测评(用户功能，做测评)
     * */
-    @RequestMapping("addquestion")
+    @PostMapping("addquestion")
     public Result addQuestion(@RequestBody ArrayList<Reply> replyList){
         boolean OK = topicService.addTopics(replyList);
         Result result;
@@ -131,7 +128,7 @@ public class QuestionController {
 //    TODO 测试
     * 删除测评报告
     * */
-    @RequestMapping("deletequestion/{user_id}/{question_id}")
+    @GetMapping("deletequestion/{user_id}/{question_id}")
     public Result deleteQuestion(@PathVariable(value = "user_id")String userId,
                               @PathVariable(value = "question_id")String  questionId){
         boolean OK = topicService.deleteTopics(Integer.parseInt(userId),Integer.parseInt(questionId));
