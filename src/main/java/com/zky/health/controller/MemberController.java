@@ -129,9 +129,15 @@ public class MemberController {
             String[] strings = {"2022/4/1","2022/5/22","2022/6/26","2022/6/27","2022/6/26","2022/6/27","2022/6/26","2022/6/27","2022/6/26","2022/6/27"};
             resMap.put("reg",strings[new Random().nextInt(9)]);
             if(new Random().nextInt(2)==1){
-                resMap.put("flag","启用");
+                resMap.put("flag","报告已上传");
             }else{
-                resMap.put("flag","禁用");
+                resMap.put("flag","报告未上传");
+            }
+
+            if(new Random().nextInt(2)==1){
+                resMap.put("taocan","普通体检项");
+            }else{
+                resMap.put("taocan","豪华体检项");
             }
 
             resMap.put("member",member);
