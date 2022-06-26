@@ -8,6 +8,7 @@ import com.zky.health.service.AdviceService;
 import com.zky.health.service.QuestionService;
 import com.zky.health.service.TopicService;
 import com.zky.health.service.UserService;
+import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -27,7 +28,7 @@ import java.util.HashMap;
  */
 @RestController
 @RequestMapping("/api/advice/")
-
+@Api (tags = "方案相关接口")//swagger 标注这是一个控制器类
 public class AdviceController {
 
     @Autowired
