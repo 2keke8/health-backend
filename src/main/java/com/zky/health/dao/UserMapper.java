@@ -3,6 +3,8 @@ package com.zky.health.dao;
 import com.zky.health.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.ArrayList;
+
 @Mapper
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -18,4 +20,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    ArrayList<User> selectAll();
 }

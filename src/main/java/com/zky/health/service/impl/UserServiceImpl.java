@@ -9,6 +9,12 @@ import com.zky.health.utils.JwtUtil;
 import com.zky.health.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @Description: 用户业务实现类
@@ -22,8 +28,39 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserServiceImpl implements UserService {
 
+
     @Autowired
     UserMapper userMapper;
+
+    // 查询用户列表
+    @Override
+    public HashMap<String,Object> selectAll() {
+        HashMap<String,Object> resMap = new HashMap<>();
+        ArrayList<User> users = userMapper.selectAll();
+        ArrayList<String> roles = new ArrayList<>();
+        for(User user : users){
+            //查询用户角色
+            Integer roleId = selectUserRoleId(user.getId());
+            //添加用户信息
+            users.add(user);
+            //添加角色信息
+            if(roleId == 1){
+            //系统管理员
+                roles.add("系统管理员");
+            }else {
+                //健康管理师
+                roles.add("健康管理师");
+            }
+        }
+
+        return resMap;
+
+    }
+
+    @Override
+    public boolean deleteUser(Integer id) {
+        return userMapper.deleteByPrimaryKey(id)==1;
+    }
 
     @Autowired
     UserRoleMapper userRoleMapper;
@@ -62,6 +99,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public int selectUserRoleId(int userid) {
         return userRoleMapper.selectUserRoleId(userid);
+    }
+
+    /*
+    * 更新用户信息
+    * */
+    @Override
+    public boolean updateUser(User user, String symbol) {
+        Integer num ;
+//        判断添加还是更新数据
+        if("add".equals(symbol)){
+            num = userMapper.insert(user);
+        }else if("update".equals(symbol)){
+            //判断用户名是否为空
+            if(ObjectUtils.isEmpty(user.getId())){
+                num = 0;
+            }else{
+                num = userMapper.updateByPrimaryKey(user);
+            }
+        }else{
+            return false;
+        }
+        return num==1;
+
     }
 
     @Override
