@@ -3,12 +3,10 @@ package com.zky.health.controller;
 import com.zky.health.entity.Order;
 import com.zky.health.entity.Result;
 import com.zky.health.service.OrderServcie;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -24,12 +22,13 @@ import java.util.List;
  * @Version: 1.0
  */
 @RestController
+@Api(tags = "预约相关接口")//swagger 标注这是一个控制器类
 public class OrderController {
 
     @Autowired
     OrderServcie orderServcie;
 
-    @RequestMapping("/api/queryorders")
+    @GetMapping("/api/queryorders")
     public Result selectAllOrders(){
 
         Result result;
@@ -44,7 +43,7 @@ public class OrderController {
 
     }
 
-    @RequestMapping("/api/orderaffirm")
+    @GetMapping("/api/orderaffirm")
     public Result orderAffirm(String orderid){
 
         Result result;

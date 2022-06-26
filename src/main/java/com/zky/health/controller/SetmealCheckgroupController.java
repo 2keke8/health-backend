@@ -2,11 +2,10 @@ package com.zky.health.controller;
 
 import com.zky.health.entity.Result;
 import com.zky.health.service.SetmealCheckgroupKeyService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Description:
@@ -18,12 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version: 1.0
  */
 @RestController
+@Api(tags = "套餐与检查组接口")//swagger 标注这是一个控制器类
 public class SetmealCheckgroupController {
 
     @Autowired
     SetmealCheckgroupKeyService setmealCheckgroupKeyService;
 
-    @RequestMapping("/api/addgroup/{setmealId}/{groupname}")
+    @GetMapping("/api/addgroup/{setmealId}/{groupname}")
     public Result addgroup(@PathVariable("setmealId")Integer setmealId,@PathVariable("groupname")String groupname){
 
         Result result;

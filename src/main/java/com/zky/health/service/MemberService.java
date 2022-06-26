@@ -22,4 +22,11 @@ public interface MemberService {
     int insertMember(Member member);
 
     int deleteMember(int userid);
+
+    /**
+     * 批量删除会员
+     * @param membersId 会员的id
+     * @return 返回影响的行数
+     */
+    int deleteMembers(List<Integer> membersId);
 }

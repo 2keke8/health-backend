@@ -3,6 +3,7 @@ package com.zky.health.controller;
 import com.zky.health.entity.Member;
 import com.zky.health.entity.Result;
 import com.zky.health.service.MemberService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +23,13 @@ import java.util.List;
  * @Version: 1.0
  */
 @RestController
-
+@Api(tags = "会员相关接口")//swagger 标注这是一个控制器类
 public class MemberController {
 
     @Autowired
     MemberService memberService;
 
-    @RequestMapping("/api/querybyname")
+    @GetMapping("/api/querybyname")
     public Result queryByName(String membername){
 
         Result result;
@@ -51,7 +52,7 @@ public class MemberController {
         return result;
     }
 
-    @RequestMapping("/api/addmember")
+    @PostMapping("/api/addmember")
     public Result addMember(@RequestBody Member member){
 
         Result result;
@@ -69,7 +70,7 @@ public class MemberController {
         return result;
     }
 
-    @RequestMapping("/api/deletemember/{memberid}")
+    @GetMapping("/api/deletemember/{memberid}")
     public Result deleteUser(@PathVariable("memberid") String id){
 
         int memberid = Integer.parseInt(id);
@@ -89,7 +90,31 @@ public class MemberController {
         return result;
     }
 
-    @RequestMapping("/api/queryallmembers")
+    /**
+     * 批量删除会员
+     * @param membersId 会员的id
+     * @return 返回影响的行数
+     */
+    @PostMapping("/api/deletemembers")
+    public Result deleteUser(@RequestBody List<Integer> membersId){
+
+
+        Result result;
+
+        int i = memberService.deleteMembers(membersId);
+        if(i <= 0){
+            result = Result.error();
+            result.setMessage("批量删除会员失败！");
+            return result;
+        }
+
+        result = Result.success();
+        result.setMessage("批量删除会员成功");
+
+        return result;
+    }
+
+    @GetMapping("/api/queryallmembers")
     public Result queryAllMembers(){
 
         ArrayList<HashMap> resList = new ArrayList<>();

@@ -5,6 +5,7 @@ import com.zky.health.entity.User;
 import com.zky.health.service.UserService;
 import com.zky.health.utils.HostHolder;
 import com.zky.health.utils.MD5Utils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.util.HashMap;
  */
 @CrossOrigin
 @RestController
+@Api(tags = "用户相关接口")//swagger 标注这是一个控制器类
 //@CrossOrigin(origins = "*",allowCredentials = "true")
 public class UserController {
 

@@ -1,5 +1,9 @@
 package com.zky.health.constant;
 
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.Map;
+
 /**
  * @Description:
  * @BelongsProject: health
@@ -37,5 +41,13 @@ public class MyConstant {
     // 区间DAU
     public static String getDAUKey(String startDate, String endDate) {
         return PREFIX_DAU + SPLIT + startDate + SPLIT + endDate;
+    }
+
+    //解析成JSON字符串
+    public static String getJSONString(int code, String msg) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        jsonObject.put("msg", msg);
+        return jsonObject.toJSONString();
     }
 }
