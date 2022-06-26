@@ -25,6 +25,10 @@ public class CheckItemController {
     @Autowired
     CheckItemService checkItemService;
 
+    /**
+     * @description：查询检查项列表
+     * @return：包含检查项列表
+     */
     @GetMapping("/api/querygroupitems")
     public Result querygroupitems(){
 
@@ -40,6 +44,11 @@ public class CheckItemController {
 
     }
 
+    /**
+     * @description：更新检查项信息
+     * @param checkitem
+     * @return
+     */
     @PostMapping("/api/updateitem")
     public Result updateitem(@RequestBody Checkitem checkitem){
 
@@ -60,6 +69,11 @@ public class CheckItemController {
 
     }
 
+    /**
+     * @description：删除检查项
+     * @param id
+     * @return
+     */
     @GetMapping("/api/deleteitem/{id}")
     public Result deleteitem(@PathVariable("id")Integer id){
 

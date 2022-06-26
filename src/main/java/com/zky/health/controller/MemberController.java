@@ -29,6 +29,11 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
+    /**
+     * @description：通过会员名查询会员
+     * @param membername
+     * @return
+     */
     @GetMapping("/api/querybyname")
     public Result queryByName(String membername){
 
@@ -52,6 +57,11 @@ public class MemberController {
         return result;
     }
 
+    /**
+     * @description：增加会员
+     * @param member
+     * @return
+     */
     @PostMapping("/api/addmember")
     public Result addMember(@RequestBody Member member){
 
@@ -62,7 +72,7 @@ public class MemberController {
             result.setMessage("系统错误，插入失败！");
             return result;
         }
-
+        // 设置插入会员的时间
         member.setRegtime(new Date());
 
         result = Result.success();
@@ -70,8 +80,13 @@ public class MemberController {
         return result;
     }
 
+    /**
+     * @description：通过会员id删除会员
+     * @param id
+     * @return
+     */
     @GetMapping("/api/deletemember/{memberid}")
-    public Result deleteUser(@PathVariable("memberid") String id){
+    public Result deleteMember(@PathVariable("memberid") String id){
 
         int memberid = Integer.parseInt(id);
 
@@ -91,12 +106,12 @@ public class MemberController {
     }
 
     /**
-     * 批量删除会员
-     * @param membersId 会员的id
-     * @return 返回影响的行数
+     * @description：删除会议
+     * @param membersId 会员id
+     * @return
      */
     @PostMapping("/api/deletemembers")
-    public Result deleteUser(@RequestBody List<Integer> membersId){
+    public Result deleteMember(@RequestBody List<Integer> membersId){
 
 
         Result result;
@@ -114,11 +129,17 @@ public class MemberController {
         return result;
     }
 
+    /**
+     * @description：查询所有会员
+     * @return：包含map集合：会员名，会员信息
+     */
     @GetMapping("/api/queryallmembers")
     public Result queryAllMembers(){
 
         ArrayList<HashMap> resList = new ArrayList<>();
         Date date = new Date();
+
+        // 得到当前的年份， 用于计算年龄
         int currentYear = date.getYear();
 
         List<Member> members = memberService.selectAllMembers();
@@ -127,6 +148,8 @@ public class MemberController {
             int age;
             Date birthday = member.getBirthday();
             int year = birthday.getYear();
+
+            // 计算年龄， 当前年份减去生日的年份加1
             age = currentYear - year + 1;
             resMap.put("age",age);
             resMap.put("member",member);

@@ -25,6 +25,10 @@ public class MealController {
     @Autowired
     SetMealService setMealService;
 
+    /**
+     * @description：查询套餐列表
+     * @return：包含套餐列表
+     */
     @GetMapping("/api/queryMeals")
     public Result queryMeals(){
 
@@ -38,6 +42,11 @@ public class MealController {
         return result;
     }
 
+    /**
+     * @description：修改套餐信息
+     * @param setmeal 套餐id
+     * @return
+     */
     @PostMapping("/api/updatemeal")
     public Result updateMeal(@RequestBody Setmeal setmeal){
 
@@ -62,6 +71,11 @@ public class MealController {
     }
 
 
+    /**
+     * @description：删除套餐信息
+     * @param code
+     * @return
+     */
     @GetMapping("/api/deletemeal/{code}")
     public Result deletemeal(@PathVariable("code")Integer code){
 

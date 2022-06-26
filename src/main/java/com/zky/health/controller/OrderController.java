@@ -28,6 +28,10 @@ public class OrderController {
     @Autowired
     OrderServcie orderServcie;
 
+    /**
+     * @description：查询所有预约列表
+     * @return：包含List订单列表
+     */
     @GetMapping("/api/queryorders")
     public Result selectAllOrders(){
 

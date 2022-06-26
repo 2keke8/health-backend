@@ -35,6 +35,12 @@ public class UserController {
 
     @Autowired
     DataService dataService;
+
+    /**
+     * @description：用户登录验证
+     * @param user
+     * @return：包含用户信息、token
+     */
     @PostMapping("/api/login")
     public Result login(@RequestBody User user){
 
@@ -67,6 +73,7 @@ public class UserController {
         //封装返回结果
         HashMap<String, Object> data = new HashMap<>();
         User resuser = userService.selectUserByname(user.getUsername());
+        //生成token
         String token = userService.createToken(resuser.getUsername());
         data.put("user",resuser);
         data.put("token",token);
