@@ -3,11 +3,9 @@ package com.zky.health.controller;
 import com.zky.health.entity.Result;
 import com.zky.health.entity.Setmeal;
 import com.zky.health.service.SetMealService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,12 +19,13 @@ import java.util.List;
  * @Version: 1.0
  */
 @RestController
+@Api(tags = "套餐相关接口")//swagger 标注这是一个控制器类
 public class MealController {
 
     @Autowired
     SetMealService setMealService;
 
-    @RequestMapping("/api/queryMeals")
+    @GetMapping("/api/queryMeals")
     public Result queryMeals(){
 
         Result result = Result.success();
@@ -39,7 +38,7 @@ public class MealController {
         return result;
     }
 
-    @RequestMapping("/api/updatemeal")
+    @PostMapping("/api/updatemeal")
     public Result updateMeal(@RequestBody Setmeal setmeal){
 
         Result result;
@@ -63,7 +62,7 @@ public class MealController {
     }
 
 
-    @RequestMapping("/api/deletemeal/{code}")
+    @GetMapping("/api/deletemeal/{code}")
     public Result deletemeal(@PathVariable("code")Integer code){
 
         Result result;

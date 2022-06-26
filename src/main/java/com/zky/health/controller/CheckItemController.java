@@ -3,11 +3,9 @@ package com.zky.health.controller;
 import com.zky.health.entity.Checkitem;
 import com.zky.health.entity.Result;
 import com.zky.health.service.CheckItemService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,12 +19,13 @@ import java.util.List;
  * @Version: 1.0
  */
 @RestController
+@Api(tags = "检查项相关接口")//swagger 标注这是一个控制器类
 public class CheckItemController {
 
     @Autowired
     CheckItemService checkItemService;
 
-    @RequestMapping("/api/querygroupitems")
+    @GetMapping("/api/querygroupitems")
     public Result querygroupitems(){
 
         Result result;
@@ -41,7 +40,7 @@ public class CheckItemController {
 
     }
 
-    @RequestMapping("/api/updateitem")
+    @PostMapping("/api/updateitem")
     public Result updateitem(@RequestBody Checkitem checkitem){
 
         Result result;
@@ -61,7 +60,7 @@ public class CheckItemController {
 
     }
 
-    @RequestMapping("/api/deleteitem/{id}")
+    @GetMapping("/api/deleteitem/{id}")
     public Result deleteitem(@PathVariable("id")Integer id){
 
         Result result;

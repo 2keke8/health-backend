@@ -13,9 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ public class AdviceController {
     /*
     * 查询所有方案
     * */
-    @RequestMapping(value = "queryalladvice")
+    @GetMapping(value = "queryalladvice")
     public Result QueryAllAdvice(){
         Result result ;
         ArrayList<Advice> adviceDetails;
@@ -74,7 +72,7 @@ public class AdviceController {
     /*
     * 查询方案内容
     * */
-    @RequestMapping(value = "queryadvicedetails/{user_id}")
+    @GetMapping(value = "queryadvicedetails/{user_id}")
     public Result QueryAdviceDetails(@PathVariable(value = "user_id")Integer userID){
         Result result = null;
 
@@ -93,7 +91,7 @@ public class AdviceController {
     /*
     * 新增方案
     * */
-        @RequestMapping(value = "addadvice")
+    @PostMapping(value = "addadvice")
     public Result addAdvice(String user_id,String healther_id,String content){
         Result result = null;
 
@@ -114,7 +112,7 @@ public class AdviceController {
     /*
     * 删除方案
     * */
-    @RequestMapping(value = "deleteadvice/{advice_id}")
+    @PostMapping(value = "deleteadvice/{advice_id}")
     public Result deleteAdvice(@PathVariable(value = "advice_id") String advice_id){
         Result result = null;
 

@@ -3,10 +3,9 @@ package com.zky.health.controller;
 import com.zky.health.entity.Result;
 import com.zky.health.entity.Topic;
 import com.zky.health.service.TopicService;
+import io.swagger.annotations.Api;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping(value = "/api/system/")
+@Api(tags = "系统用户相关接口")//swagger 标注这是一个控制器类
 public class SystemController {
 
     @Resource
@@ -33,7 +33,7 @@ public class SystemController {
     * */
 
 
-    @RequestMapping(value = "queryalltopic")
+    @GetMapping(value = "queryalltopic")
     public Result QueryAllTopic(){
         Result result;
         ArrayList<Topic> topics = topicService.getTopicList();
@@ -53,7 +53,7 @@ public class SystemController {
     /*
     *增加问题
     * */
-    @RequestMapping(value = "addtopic")
+    @PostMapping(value = "addtopic")
     public Result addTopic(@RequestBody Topic topic){
         Result result;
         boolean OK = topicService.addTopic(topic);

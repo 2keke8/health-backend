@@ -2,9 +2,11 @@ package com.zky.health.controller;
 
 import com.zky.health.entity.Result;
 import com.zky.health.service.DataService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,12 +22,13 @@ import java.util.Date;
  * @Version: 1.0
  */
 @RestController
+@Api(tags = "统计数据相关接口")//swagger 标注这是一个控制器类
 public class DataController {
     @Autowired
     private DataService dataService;
 
     // 统计活跃用户
-    @RequestMapping(path = "/api/data/dau")
+    @GetMapping(path = "/api/data/dau")
     public Result getDAU(@DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
                          @DateTimeFormat(pattern = "yyyy-MM-dd") Date end) {
 

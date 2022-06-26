@@ -5,6 +5,7 @@ import com.zky.health.entity.Result;
 import com.zky.health.entity.Topic;
 import com.zky.health.service.QuestionService;
 import com.zky.health.service.TopicService;
+import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/question/")
+@Api(tags = "问卷相关接口")//swagger 标注这是一个控制器类
 public class QuestionController {
 
     @Resource
