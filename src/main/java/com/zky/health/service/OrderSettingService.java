@@ -4,6 +4,8 @@ import com.zky.health.dao.OrdersettingMapper;
 import com.zky.health.entity.Ordersetting;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
+
 /**
  * @description：预约设置
  * @BelongsProject: health
@@ -16,5 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public interface OrderSettingService {
 
     int insertOrderSetting(Ordersetting ordersetting);
+
+    Ordersetting queryOrderSettingByDate(Date orderdate);
 
 }

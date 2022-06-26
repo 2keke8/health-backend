@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * @Description: 预约设置实现类
  * @BelongsProject: health
@@ -27,6 +29,11 @@ public class OrderSettingServiceImpl implements OrderSettingService {
 
         return ordersettingMapper.insert(ordersetting);
 
+    }
+
+    @Override
+    public Ordersetting queryOrderSettingByDate(Date orderdate) {
+        return ordersettingMapper.selectByDate(orderdate);
     }
 
 }

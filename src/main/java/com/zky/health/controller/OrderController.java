@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -148,6 +149,31 @@ public class OrderController {
 
         result = Result.success();
         result.setMessage("插入成功~");
+
+        return result;
+    }
+
+    /**
+     * @description：查询某个日期的预约人数以及可预约人数
+     * @param date
+     * @return
+     */
+    @GetMapping("/api/queryordersettingbyDate")
+    public Result queryOrderSettingByDate(Date date){
+
+        Result result;
+
+        if(date == null){
+            result = Result.error()；
+            result.setMessage("请选择日期！");
+            return result;
+        }
+
+        Ordersetting ordersetting = orderSettingService.queryOrderSettingByDate(date);
+
+        result = Result.success();
+        result.setMessage("查询预约设置成功");
+        result.setData(ordersetting);
 
         return result;
     }
