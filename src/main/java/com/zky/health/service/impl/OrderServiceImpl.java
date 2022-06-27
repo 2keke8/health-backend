@@ -164,4 +164,11 @@ public class OrderServiceImpl implements OrderServcie {
 
         return i;
     }
+
+    @Override
+    public Order selectByPrimaryKey(Integer integer) {
+
+        return orderMapper.selectByPrimaryKey(integer);
+
+    }
 }

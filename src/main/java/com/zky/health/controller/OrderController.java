@@ -1,8 +1,11 @@
 package com.zky.health.controller;
 
+import com.zky.health.constant.MyConstant;
+import com.zky.health.entity.Member;
 import com.zky.health.entity.Order;
 import com.zky.health.entity.Ordersetting;
 import com.zky.health.entity.Result;
+import com.zky.health.service.MemberService;
 import com.zky.health.service.OrderServcie;
 import com.zky.health.service.OrderSettingService;
 import io.swagger.annotations.Api;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,6 +39,9 @@ public class OrderController {
     OrderServcie orderServcie;
 
     @Autowired
+    MemberService memberService;
+
+    @Autowired
     OrderSettingService orderSettingService;
 
     /**
@@ -47,9 +55,28 @@ public class OrderController {
 
         List<Order> orders = orderServcie.selectAllOrders();
 
+        //存放返回结果
+        HashMap<Object, Object> resMap = new HashMap<>();
+
+        //得到每个预约的用户
+        for (Order order : orders) {
+            Integer memberId = order.getMemberId();
+            Member member = memberService.selectByPrimaryKey(memberId);
+            String time = new SimpleDateFormat(MyConstant.TIME_PATTERN).format(order.getOrderdate());
+
+//            if(member == null) continue;
+
+            resMap.put("date", time);
+            resMap.put("id", order.getId());
+            resMap.put("membername", "匿名用户");
+            resMap.put("phone", member.getPhonenumber());
+            resMap.put("ordertype", order.getOrdertype());
+            resMap.put("orderstatus", order.getOrderstatus());
+        }
+
         result = Result.success();
         result.setMessage("查询预约列表成功");
-        result.setData(orders);
+        result.setData(resMap);
 
         return result;
 

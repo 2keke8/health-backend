@@ -19,6 +19,8 @@ public interface OrderServcie {
 
     List<Order> selectAllOrders();
 
+    Order selectByPrimaryKey(Integer integer);
+
     int affirmOrder(int orderid);
 
     boolean insertExcel(String fileName, MultipartFile file);
