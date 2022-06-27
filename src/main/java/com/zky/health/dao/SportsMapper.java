@@ -2,6 +2,8 @@ package com.zky.health.dao;
 
 import com.zky.health.entity.Sports;
 
+import java.util.ArrayList;
+
 public interface SportsMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface SportsMapper {
     int updateByPrimaryKeySelective(Sports record);
 
     int updateByPrimaryKey(Sports record);
+
+    ArrayList<Sports> selectAll();
 }

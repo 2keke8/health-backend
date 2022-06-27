@@ -2,6 +2,8 @@ package com.zky.health.dao;
 
 import com.zky.health.entity.Food;
 
+import java.util.ArrayList;
+
 public interface FoodMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface FoodMapper {
     int updateByPrimaryKeySelective(Food record);
 
     int updateByPrimaryKey(Food record);
+
+    ArrayList<Food> selectAll();
 }

@@ -1,7 +1,9 @@
 package com.zky.health.controller;
 
+import com.zky.health.dao.MemberMapper;
 import com.zky.health.dao.UserMapper;
 import com.zky.health.entity.Advice;
+import com.zky.health.entity.Member;
 import com.zky.health.entity.Result;
 import com.zky.health.entity.User;
 import com.zky.health.service.AdviceService;
@@ -16,7 +18,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -29,6 +33,8 @@ import java.util.HashMap;
 @Api (tags = "方案相关接口")//swagger 标注这是一个控制器类
 public class AdviceController {
 
+    @Resource
+    MemberMapper memberMapper;
     @Autowired
     UserService userService;
     @Resource
@@ -54,13 +60,24 @@ public class AdviceController {
             for(Advice advice: adviceDetails){
                 //遍历方案
                 HashMap<String, Object> details = new HashMap<>();
-                User user = userMapper.selectByPrimaryKey(advice.getUserId());
+                Member member = memberMapper.selectByPrimaryKey(advice.getUserId());
                 //查出name
-                String username = user.getUsername();
+                String username = member.getName();
                 String healtherName = userMapper.selectByPrimaryKey(advice.getHealtherId()).getUsername();
                 details.put("advice",advice);
                 details.put("user_name",username);
                 details.put("healther_name",healtherName);
+                int age;
+                Date birthday = member.getBirthday();
+                int year = birthday.getYear();
+                int currentYear = new Date().getYear();
+                // 计算年龄， 当前年份减去生日的年份加1
+                age = currentYear - year + 1;
+                details.put("age",age);
+                details.put("sex",member.getSex());
+
+                Date date = advice.getDate();
+                details.put("time",new SimpleDateFormat("yyyy-MM-dd").format(date));
                 //封装到map里 添加到返回列表
                 resList.add(details);
             }
