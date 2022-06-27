@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -234,13 +235,22 @@ public class OrderController {
 
     /**
      * @description：查询某个日期的预约人数以及可预约人数
-     * @param date
+     * @param strDate
      * @return
      */
-    @GetMapping("/api/queryordersettingbydate")
-    public Result queryOrderSettingByDate(Date date){
+    @GetMapping("/api/queryordersettingbydate/{date}")
+    public Result queryOrderSettingByDate(@PathVariable("date") String strDate){
 
         Result result;
+
+        Date date = null;
+
+        try {
+            date = new SimpleDateFormat(MyConstant.TIME_PATTERN).parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
         if(date == null){
             result = Result.error();
@@ -249,6 +259,7 @@ public class OrderController {
         }
 
         Ordersetting ordersetting = orderSettingService.queryOrderSettingByDate(date);
+        ordersetting.setNumber(ordersetting.getNumber() - ordersetting.getReservations());
 
         result = Result.success();
         result.setMessage("查询预约设置成功");
