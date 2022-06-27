@@ -35,19 +35,19 @@ public class UserIntercepter implements HandlerInterceptor {
             String tokenName = "Authorization";
             // 尝试从header中取token
             String token = request.getHeader(tokenName);
-            //尝试从参数中取token
-            if (StringUtils.isEmpty(token)) {
-                token = request.getParameter(tokenName);
-            }
-            //尝试从cooke
-            if (StringUtils.isEmpty(token)) {
-                Cookie[] cookies = request.getCookies();
-                for (Cookie cookie : cookies) {
-                    if (Objects.equals(cookie.getName(), tokenName)) {
-                        token = cookie.getValue();
-                    }
-                }
-            }
+//            //尝试从参数中取token
+//            if (StringUtils.isEmpty(token)) {
+//                token = request.getParameter(tokenName);
+//            }
+//            //尝试从cooke
+//            if (StringUtils.isEmpty(token)) {
+//                Cookie[] cookies = request.getCookies();
+//                for (Cookie cookie : cookies) {
+//                    if (Objects.equals(cookie.getName(), tokenName)) {
+//                        token = cookie.getValue();
+//                    }
+//                }
+//            }
             //如果前端没有携带token返回json数据
             if (StringUtils.isEmpty(token)) {
                 throw new Exception( "用户未登录");
