@@ -3,6 +3,7 @@ package com.zky.health.controller;
 import com.zky.health.entity.Disease;
 import com.zky.health.entity.Result;
 import com.zky.health.service.DiseaseService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/disease/")
+@Api(tags = "疾病库相关接口")
 public class DiseaseController {
 
     @Autowired

@@ -21,9 +21,11 @@ public interface OrderServcie {
 
     Order selectByPrimaryKey(Integer integer);
 
-    int affirmOrder(int orderid);
+    int affirmOrder(Integer orderid);
 
     boolean insertExcel(String fileName, MultipartFile file);
 
     File downloadModel();
+
+    int cancelOrder(Order order);
 }

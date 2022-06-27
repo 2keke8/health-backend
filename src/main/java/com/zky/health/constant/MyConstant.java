@@ -22,6 +22,11 @@ public class MyConstant {
 
     private static final String SPLIT = ":";
 
+    public static final String AFFIRM_ORDER = "到诊";
+
+    public static final String CANCEL_ORDER = "未到诊";
+
+
     // 单日uv
     public static String getUVKey(String date) {
         return PREFIX_UV + SPLIT + date;

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,39 +56,49 @@ public class OrderController {
 
         List<Order> orders = orderServcie.selectAllOrders();
 
-        //存放返回结果
-        HashMap<Object, Object> resMap = new HashMap<>();
+
+
+        ArrayList<HashMap<Object, Object>> orderList = new ArrayList();
 
         //得到每个预约的用户
         for (Order order : orders) {
+
+            //存放返回结果
+            HashMap<Object, Object> resMap = new HashMap<>();
+
             Integer memberId = order.getMemberId();
             Member member = memberService.selectByPrimaryKey(memberId);
             String time = new SimpleDateFormat(MyConstant.TIME_PATTERN).format(order.getOrderdate());
 
-//            if(member == null) continue;
+            if(member == null) continue;
 
             resMap.put("date", time);
             resMap.put("id", order.getId());
-            resMap.put("membername", "匿名用户");
+            resMap.put("membername", member.getName());
             resMap.put("phone", member.getPhonenumber());
             resMap.put("ordertype", order.getOrdertype());
             resMap.put("orderstatus", order.getOrderstatus());
+
+            orderList.add(resMap);
+
         }
 
         result = Result.success();
         result.setMessage("查询预约列表成功");
-        result.setData(resMap);
+        result.setData(orderList);
 
         return result;
 
     }
 
-    @GetMapping("/api/orderaffirm")
-    public Result orderAffirm(String orderid){
+    @GetMapping("/api/orderaffirm/{id}")
+    public Result orderAffirm(@PathVariable("id") Integer id){
 
         Result result;
 
-        int i = orderServcie.affirmOrder(Integer.parseInt(orderid));
+        Order order = orderServcie.selectByPrimaryKey(id);
+
+        int i = orderServcie.affirmOrder(id);
 
         if(i == -1){
             result = Result.error();
@@ -101,18 +112,57 @@ public class OrderController {
             return result;
         }
 
-
+        //更新预约设置数据，将剩余人数-1
+        Ordersetting ordersetting = orderSettingService.queryOrderSettingByDate(order.getOrderdate());
+        ordersetting.setReservations(ordersetting.getReservations()-1);
+        orderSettingService.updateOrderSetting(ordersetting);
 
         result = Result.error();
         result.setMessage("预约失败！请联系管理员");
 
         return result;
     }
+
+    /**
+     * @decription；取消预约
+     * @param id
+     * @return
+     */
+    @GetMapping("/api/cancelorder/{id}")
+    public Result cancelOrder(@PathVariable("id") Integer id){
+
+        Result result;
+
+        Order order = orderServcie.selectByPrimaryKey(id);
+
+        int i = orderServcie.cancelOrder(order);
+
+        if(i == -1){
+            result = Result.error();
+            result.setMessage("用户还没有预约哦~请先预约");
+        }
+
+        if(i < 0){
+            result = Result.error();
+            result.setMessage("取消预约失败");
+        }
+
+        //更新预约设置数据，将剩余人数+1
+        Ordersetting ordersetting = orderSettingService.queryOrderSettingByDate(order.getOrderdate());
+        ordersetting.setReservations(ordersetting.getReservations()+1);
+        orderSettingService.updateOrderSetting(ordersetting);
+
+        result = Result.success();
+        result.setMessage("用户取消预约成功~");
+
+        return result;
+
+    }
     /*
     * 上传预约表格
     * */
     @PostMapping(value = "/api/importExcel")
-    public Result ImportExcel(@RequestParam(value = "orderfiles") MultipartFile orderfiles) {
+    public Result ImportExcel(MultipartFile orderfiles) {
         Result result;
         if (orderfiles.isEmpty()) {
             result = Result.error();

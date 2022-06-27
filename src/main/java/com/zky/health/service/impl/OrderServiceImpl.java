@@ -1,6 +1,7 @@
 package com.zky.health.service.impl;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
+import com.zky.health.constant.MyConstant;
 import com.zky.health.dao.OrderMapper;
 import com.zky.health.entity.Order;
 import com.zky.health.service.OrderServcie;
@@ -152,14 +153,14 @@ public class OrderServiceImpl implements OrderServcie {
      * @return >0 成功 0:失败 -1：已经预约
      */
     @Override
-    public int affirmOrder(int orderid) {
+    public int affirmOrder(Integer orderid) {
 
         Order order = orderMapper.selectByPrimaryKey(orderid);
         if(order == null) return 0;
 
-        if(1 == Integer.parseInt(order.getOrderstatus())) return -1;
+        if("到诊".equals(order.getOrderstatus())) return -1;
 
-        order.setOrderstatus(String.valueOf(1));
+        order.setOrderstatus(MyConstant.AFFIRM_ORDER);
         int i = orderMapper.updateByPrimaryKey(order);
 
         return i;
@@ -170,5 +171,17 @@ public class OrderServiceImpl implements OrderServcie {
 
         return orderMapper.selectByPrimaryKey(integer);
 
+    }
+
+    @Override
+    public int cancelOrder(Order order) {
+
+        if( MyConstant.CANCEL_ORDER.equals(order.getOrderstatus()) ) {
+            //表示当前状态重合
+            return -1;
+        }
+        int i = orderMapper.updateByPrimaryKey(order);
+
+        return i;
     }
 }
