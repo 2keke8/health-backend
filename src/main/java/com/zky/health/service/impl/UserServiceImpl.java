@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,26 +35,31 @@ public class UserServiceImpl implements UserService {
 
     // 查询用户列表
     @Override
-    public HashMap<String,Object> selectAll() {
-        HashMap<String,Object> resMap = new HashMap<>();
+    public ArrayList<HashMap> selectAll() {
+        HashMap<String,Object> map = new HashMap<>();
+        ArrayList<HashMap> resList = new ArrayList<>();
         ArrayList<User> users = userMapper.selectAll();
-        ArrayList<String> roles = new ArrayList<>();
+
         for(User user : users){
             //查询用户角色
             Integer roleId = selectUserRoleId(user.getId());
             //添加用户信息
-            users.add(user);
+//            users.add(user);
+            map.put("user",user);
             //添加角色信息
             if(roleId == 1){
             //系统管理员
-                roles.add("系统管理员");
+                map.put("role","系统管理员");
             }else {
                 //健康管理师
-                roles.add("健康管理师");
+                map.put("role","健康管理师");
             }
+
+            map.put("birthday",new SimpleDateFormat(MyConstant.TIME_PATTERN).format(user.getBirthday()));
+            resList.add(map);
         }
 
-        return resMap;
+        return resList;
 
     }
 

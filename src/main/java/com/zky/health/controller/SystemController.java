@@ -40,10 +40,28 @@ public class SystemController {
             result = Result.error();
         }else{
             result = Result.success();
-            HashMap<String,Object> map = new HashMap<>();
-            map.put("topicList",topics);
-            map.put("num",topics.size());
-            result.setData(map);
+            ArrayList<HashMap> resList = new ArrayList<>();
+            for(Topic topic:topics){
+                HashMap<String,Object> map = new HashMap<>();
+                map.put("topic",topic);
+                map.put("OK","是");
+                map.put("sex","所有");
+                String type="";
+                if(topic.getQuestionId()==1){
+                    type="健康测评";
+                }
+                if(topic.getQuestionId()==2){
+                    type="心理测评";
+                }
+                if(topic.getQuestionId()==3){
+                    type="风险评估";
+                }
+                map.put("type",type);
+                resList.add(map);
+            }
+
+
+            result.setData(resList);
         }
 
         return result;
@@ -115,13 +133,13 @@ public class SystemController {
     public Result queryUser(){
         Result result ;
         //查询用户列表
-        HashMap<String, Object> map = userService.selectAll();
-        if(ObjectUtils.isEmpty(map)){
+        ArrayList<HashMap> res = userService.selectAll();
+        if(ObjectUtils.isEmpty(res)){
             result = Result.error();
             result.setMessage("查询用户信息失败！");
         }else{
             result = Result.success();
-            result.setData(map);
+            result.setData(res);
         }
         return result;
     }

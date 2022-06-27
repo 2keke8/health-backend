@@ -32,7 +32,7 @@ public interface UserService {
 
     boolean updateUser(User user, String symbol);
 
-    HashMap<String,Object> selectAll();
+    ArrayList<HashMap> selectAll();
 
     boolean deleteUser(Integer id);
 }
