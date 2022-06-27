@@ -41,7 +41,7 @@ public class FoodController {
     /*
     * 查询列表
     * */
-    @GetMapping(value ="get")
+    @GetMapping(value ="/get")
     public Result getFoodList(){
         Result result;
         ArrayList<Food> foodArrayList=foodService.getFoodList();
@@ -59,7 +59,7 @@ public class FoodController {
     /*
     * 删除
     * */
-    @GetMapping(value ="delete/{food_id}")
+    @GetMapping(value ="/delete/{food_id}")
     public Result deleteFood(@PathVariable(value = "food_id") Integer food_id){
         Result result;
         boolean OK = foodService.deleteFood(food_id);

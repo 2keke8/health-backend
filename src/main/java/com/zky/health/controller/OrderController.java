@@ -79,7 +79,7 @@ public class OrderController {
     * 上传预约表格
     * */
     @PostMapping(value = "/api/importExcel")
-    public Result ImportExcel(@RequestParam(value = "orderfiles") MultipartFile orderfiles) {
+    public Result ImportExcel(MultipartFile orderfiles) {
         Result result;
         if (orderfiles.isEmpty()) {
             result = Result.error();

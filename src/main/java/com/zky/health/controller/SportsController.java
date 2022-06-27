@@ -46,7 +46,7 @@ public class SportsController {
     /*
     * 查询列表
     * */
-    @GetMapping(value ="get")
+    @GetMapping(value ="/get")
     public Result getSportsList(){
         Result result;
         ArrayList<Sports> sportsArrayList=sportsService.getSportsList();
@@ -65,7 +65,7 @@ public class SportsController {
     * 删除
     * */
 
-    @GetMapping(value ="delete/{id}")
+    @GetMapping(value ="/delete/{id}")
     public Result deleteFood(@PathVariable(value = "id") Integer id){
         Result result;
         boolean OK = sportsService.deleteSports(id);

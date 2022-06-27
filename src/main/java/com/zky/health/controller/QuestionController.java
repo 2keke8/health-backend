@@ -34,8 +34,8 @@ public class QuestionController {
     /*
     * 查询所有测评报告
     * */
-    @GetMapping("querybodytests")
-    public Result QueryBodyTests(Integer question_id){
+    @GetMapping("querybodytests/{id}")
+    public Result QueryBodyTests(@PathVariable(value = "id") Integer question_id){
 
         Result result;
         ArrayList<HashMap> replies = questionService.getReplyListByType(question_id);

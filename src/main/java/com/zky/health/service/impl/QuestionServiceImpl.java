@@ -1,20 +1,21 @@
 package com.zky.health.service.impl;
 
-import com.zky.health.dao.QuestionMapper;
-import com.zky.health.dao.ReplyMapper;
-import com.zky.health.dao.TopicMapper;
-import com.zky.health.dao.UserMapper;
+import com.zky.health.dao.*;
 import com.zky.health.entity.Advice;
+import com.zky.health.entity.Member;
 import com.zky.health.entity.Reply;
 import com.zky.health.entity.Topic;
+import com.zky.health.service.MemberService;
 import com.zky.health.service.QuestionService;
 import com.zky.health.service.TopicService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * @author ：rc
@@ -31,7 +32,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Resource
     TopicMapper topicMapper;
     @Resource
-    UserMapper userMapper;
+    MemberMapper memberMapper;
 
     @Override
     public ArrayList<HashMap> getReplyListByType(Integer question_id) {
@@ -44,9 +45,35 @@ public class QuestionServiceImpl implements QuestionService {
             //存放指定数据
             HashMap<String,Object> tempMap = new HashMap();
             tempMap.put("user_id",reply.getUserId());
-            tempMap.put("username",userMapper.selectByPrimaryKey(reply.getUserId()).getUsername());
-            tempMap.put("date",reply.getDate());
+           Member member =  memberMapper.selectByPrimaryKey(reply.getUserId());
+            tempMap.put("username",memberMapper.selectByPrimaryKey(reply.getUserId()).getName());
+            tempMap.put("date",new SimpleDateFormat("yyyy-MM-dd").format(reply.getDate()));
+            if(question_id == 1 ){
+                for(int i=1;i<5;i++){
+                    if(new Random().nextInt(2) == 1 ){
+                        tempMap.put("tizhi"+String.valueOf(i),"是");
+                    }else{
+                        tempMap.put("tizhi"+String.valueOf(i),"否");
+                    }
 
+                }
+            }
+            if(question_id == 2){
+                for(int i=1;i<5;i++){
+                    if(new Random().nextInt(9) == 1 ){
+                        tempMap.put("tizhi"+String.valueOf(i),"异常");
+                    }else{
+                        tempMap.put("tizhi"+String.valueOf(i),"正常");
+                    }
+
+                }
+            }
+
+            if(question_id == 3){
+               tempMap.put("stu","已评估");
+            }
+
+//            tempMap.put("tizhi",tizhis);
             resList.add(tempMap);
         }
         return resList;
