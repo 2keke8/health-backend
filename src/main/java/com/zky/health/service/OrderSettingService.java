@@ -19,6 +19,10 @@ public interface OrderSettingService {
 
     int insertOrderSetting(Ordersetting ordersetting);
 
+    int updateOrderSetting(Ordersetting ordersetting);
+
     Ordersetting queryOrderSettingByDate(Date orderdate);
+
+
 
 }

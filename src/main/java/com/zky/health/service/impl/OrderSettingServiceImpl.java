@@ -32,8 +32,17 @@ public class OrderSettingServiceImpl implements OrderSettingService {
     }
 
     @Override
+    public int updateOrderSetting(Ordersetting ordersetting) {
+
+        return ordersettingMapper.updateByPrimaryKey(ordersetting);
+
+    }
+
+    @Override
     public Ordersetting queryOrderSettingByDate(Date orderdate) {
         return ordersettingMapper.selectByDate(orderdate);
     }
+
+
 
 }
