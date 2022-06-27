@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zky.health.dao.SportsMapper">
+  <resultMap id="BaseResultMap" type="com.zky.health.entity.Sports">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="strength" jdbcType="VARCHAR" property="strength" />
+    <result column="time" jdbcType="INTEGER" property="time" />
+    <result column="age" jdbcType="VARCHAR" property="age" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, strength, time, age
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sports
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sports
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zky.health.entity.Sports">
+    insert into t_sports (id, name, strength, 
+      time, age)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{strength,jdbcType=VARCHAR}, 
+      #{time,jdbcType=INTEGER}, #{age,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zky.health.entity.Sports">
+    insert into t_sports
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="strength != null">
+        strength,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="strength != null">
+        #{strength,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=INTEGER},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zky.health.entity.Sports">
+    update t_sports
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="strength != null">
+        strength = #{strength,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=INTEGER},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zky.health.entity.Sports">
+    update t_sports
+    set name = #{name,jdbcType=VARCHAR},
+      strength = #{strength,jdbcType=VARCHAR},
+      time = #{time,jdbcType=INTEGER},
+      age = #{age,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
