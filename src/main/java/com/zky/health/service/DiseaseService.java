@@ -3,6 +3,8 @@ package com.zky.health.service;
 import com.zky.health.entity.Disease;
 import io.swagger.models.auth.In;
 
+import java.util.List;
+
 /**
  * @Description:
  * @BelongsProject: health
@@ -19,5 +21,7 @@ public interface DiseaseService {
     int updateDisease(Disease disease);
 
     int deleteDisease(Integer id);
+
+    List<Disease> selectAll();
 
 }

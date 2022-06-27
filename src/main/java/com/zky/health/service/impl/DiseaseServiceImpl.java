@@ -6,6 +6,8 @@ import com.zky.health.service.DiseaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @Description：疾病库业务实现类
  * @BelongsProject: health
@@ -39,6 +41,13 @@ public class DiseaseServiceImpl implements DiseaseService {
     public int deleteDisease(Integer id) {
 
         return diseaseMapper.deleteByPrimaryKey(id);
+
+    }
+
+    @Override
+    public List<Disease> selectAll() {
+
+       return diseaseMapper.selectAll();
 
     }
 }
