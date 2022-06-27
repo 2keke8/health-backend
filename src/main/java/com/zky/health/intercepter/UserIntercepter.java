@@ -3,12 +3,9 @@ package com.zky.health.intercepter;
 import com.alibaba.excel.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.zky.health.entity.Result;
-import com.zky.health.entity.User;
-import com.zky.health.service.UserService;
 import com.zky.health.utils.JwtUtil;
 import com.zky.health.utils.JwtUtil2;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 
