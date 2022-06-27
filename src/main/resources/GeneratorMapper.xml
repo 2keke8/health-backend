@@ -45,12 +45,25 @@
         </javaClientGenerator>
         <!--数据库表名及对应的Java模型类名-->
 
-<!--        <table tableName="t_setmeal_checkgroup" domainObjectName="SetmealCheckgroup"-->
-<!--               enableCountByExample="false"-->
-<!--               enableUpdateByExample="false"-->
-<!--               enableDeleteByExample="false"-->
-<!--               enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false" />-->
+        <table tableName="t_sports" domainObjectName="Sports"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false" />
+
+        <table tableName="t_food" domainObjectName="Food"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false" />
+        <table tableName="t_disease" domainObjectName="Disease"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false" />
 
 <!--        <table tableName="t_advice" domainObjectName="Advice"-->
 <!--               enableCountByExample="false"-->

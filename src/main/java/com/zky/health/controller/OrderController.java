@@ -24,6 +24,8 @@ import java.util.List;
  * @Email: 2540560264@qq.com
  * @Version: 1.0
  */
+
+@CrossOrigin
 @RestController
 @Api(tags = "预约相关接口")//swagger 标注这是一个控制器类
 public class OrderController {
