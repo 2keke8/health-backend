@@ -1,6 +1,7 @@
 package com.zky.health.service;
 
 import com.zky.health.entity.Member;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface MemberService {
     Member queryByName(String memberName);
 
     List<Member> selectAllMembers();
+
+    Member selectByPrimaryKey(Integer integer);
 
     int insertMember(Member member);
 

@@ -1,8 +1,13 @@
 package com.zky.health.controller;
 
+import com.zky.health.constant.MyConstant;
+import com.zky.health.entity.Member;
 import com.zky.health.entity.Order;
+import com.zky.health.entity.Ordersetting;
 import com.zky.health.entity.Result;
+import com.zky.health.service.MemberService;
 import com.zky.health.service.OrderServcie;
+import com.zky.health.service.OrderSettingService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -10,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,6 +38,12 @@ public class OrderController {
     @Autowired
     OrderServcie orderServcie;
 
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    OrderSettingService orderSettingService;
+
     /**
      * @description：查询所有预约列表
      * @return：包含List订单列表
@@ -41,9 +55,28 @@ public class OrderController {
 
         List<Order> orders = orderServcie.selectAllOrders();
 
+        //存放返回结果
+        HashMap<Object, Object> resMap = new HashMap<>();
+
+        //得到每个预约的用户
+        for (Order order : orders) {
+            Integer memberId = order.getMemberId();
+            Member member = memberService.selectByPrimaryKey(memberId);
+            String time = new SimpleDateFormat(MyConstant.TIME_PATTERN).format(order.getOrderdate());
+
+//            if(member == null) continue;
+
+            resMap.put("date", time);
+            resMap.put("id", order.getId());
+            resMap.put("membername", "匿名用户");
+            resMap.put("phone", member.getPhonenumber());
+            resMap.put("ordertype", order.getOrdertype());
+            resMap.put("orderstatus", order.getOrderstatus());
+        }
+
         result = Result.success();
         result.setMessage("查询预约列表成功");
-        result.setData(orders);
+        result.setData(resMap);
 
         return result;
 
@@ -125,5 +158,53 @@ public class OrderController {
     }
 
 
+    /**
+     * @description：插入预约设置
+     * @param ordersetting
+     * @return
+     */
+    @PostMapping("/api/addordersetting")
+    public Result addOrderSetting(@RequestBody Ordersetting ordersetting){
+
+        Result result;
+
+        int i = orderSettingService.insertOrderSetting(ordersetting);
+
+        if(i <= 0){
+            result = Result.error();
+            result.setMessage("插入失败，请联系管理员！");
+            return result;
+        }
+
+        result = Result.success();
+        result.setMessage("插入成功~");
+
+        return result;
+    }
+
+    /**
+     * @description：查询某个日期的预约人数以及可预约人数
+     * @param date
+     * @return
+     */
+    @GetMapping("/api/queryordersettingbydate")
+    public Result queryOrderSettingByDate(Date date){
+
+        Result result;
+
+        if(date == null){
+            result = Result.error();
+            result.setMessage("请选择日期！");
+            return result;
+        }
+
+        Ordersetting ordersetting = orderSettingService.queryOrderSettingByDate(date);
+
+        result = Result.success();
+        result.setMessage("查询预约设置成功");
+        result.setData(ordersetting);
+
+        return result;
+    }
 
 }

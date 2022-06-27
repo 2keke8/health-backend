@@ -11,7 +11,7 @@
     id, orderDate, number, reservations
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_ordersetting
     where id = #{id,jdbcType=INTEGER}
@@ -21,9 +21,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.zky.health.entity.Ordersetting">
-    insert into t_ordersetting (id, orderDate, number, 
+    insert into t_ordersetting (id, orderDate, number,
       reservations)
-    values (#{id,jdbcType=INTEGER}, #{orderdate,jdbcType=DATE}, #{number,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{orderdate,jdbcType=DATE}, #{number,jdbcType=INTEGER},
       #{reservations,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.zky.health.entity.Ordersetting">
@@ -79,4 +79,11 @@
       reservations = #{reservations,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByDate" parameterType="java.util.Date" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_ordersetting
+    where orderdate = #{orderdate,jdbcType=DATE}
+  </select>
 </mapper>
