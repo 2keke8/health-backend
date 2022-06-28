@@ -127,6 +127,31 @@ public class MemberController {
     }
 
     /**
+     * @description：删除会议
+     * @param member 会员信息
+     * @return
+     */
+    @PostMapping("/api/updatemember")
+    public Result updateMember(@RequestBody Member member){
+
+
+        Result result;
+
+        int i = memberService.updateMembers(member);
+        if(i <= 0){
+            result = Result.error();
+            result.setMessage("修改会员信息失败！");
+            return result;
+        }
+
+        result = Result.success();
+        result.setMessage("修改会员信息成功");
+
+        return result;
+
+    }
+
+    /**
      * @description：查询所有会员
      * @return：包含map集合：会员名，会员信息
      */

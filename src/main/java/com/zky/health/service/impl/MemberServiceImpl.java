@@ -63,4 +63,9 @@ public class MemberServiceImpl implements MemberService {
     public Member selectByPrimaryKey(Integer integer) {
         return memberMapper.selectByPrimaryKey(integer);
     }
+
+    @Override
+    public int updateMembers(Member member) {
+        return memberMapper.updateByPrimaryKey(member);
+    }
 }

@@ -32,4 +32,6 @@ public interface MemberService {
      * @return 返回影响的行数
      */
     int deleteMembers(List<Integer> membersId);
+
+    int updateMembers(Member member);
 }
