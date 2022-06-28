@@ -103,7 +103,7 @@ public class MemberController {
     }
 
     /**
-     * @description：删除会议
+     * @description：删除会员
      * @param membersId 会员id
      * @return
      */
@@ -127,7 +127,7 @@ public class MemberController {
     }
 
     /**
-     * @description：删除会议
+     * @description：更新会员信息
      * @param member 会员信息
      * @return
      */

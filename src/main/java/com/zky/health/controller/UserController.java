@@ -44,7 +44,6 @@ public class UserController {
     @PostMapping("/api/login")
     public Result login(@RequestBody User user){
 
-
         Result result;
 
         //判断用户名和密码是否为空
