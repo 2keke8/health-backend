@@ -1,102 +1,135 @@
-package com.pangzhao.service.impl;
+package com.zky.health.service.impl;
 
-import com.alibaba.dubbo.config.annotation.Service;
-import com.pangzhao.mapper.*;
-import com.pangzhao.pojo.*;
-import com.pangzhao.service.UserService;
+import com.zky.health.constant.MyConstant;
+import com.zky.health.dao.UserMapper;
+import com.zky.health.dao.UserRoleMapper;
+import com.zky.health.entity.User;
+import com.zky.health.service.UserService;
+import com.zky.health.utils.JwtUtil;
+import com.zky.health.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import tk.mybatis.mapper.entity.Example;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
 
 /**
- *
+ * @Description: 用户业务实现类
+ * @BelongsProject: health
+ * @BelongsPackage: com.zky.health.service.impl
+ * @Author: KeYu-Zhao
+ * @CreateTime: 2022-06-24 10:48
+ * @Email: 2540560264@qq.com
+ * @Version: 1.0
  */
-@Service(interfaceClass = UserService.class)
+@Component
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private UserAndRoleMapper userAndRoleMapper;
-    @Autowired
-    private RoleMapper roleMapper;
-    @Autowired
-    private RoleAndPermissionMapper roleAndPermissionMapper;
-    @Autowired
-    private PermissionMapper permissionMapper;
 
-    //根据用户名查找用户 包括用户对应的角色集合 以及角色对应的权限集合
+    @Autowired
+    UserMapper userMapper;
+
+    // 查询用户列表
     @Override
-    public User findByName(String s) {
-        Example example = new Example(User.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("username",s);
-        User user = userMapper.selectOneByExample(example);
-
-        List<Role> roles = findRoleByRoleId(findRoleIdByUserId(user.getId()));
-        for (Role role : roles) {
-            List<Permission> permissions = findPermissionByPermissionId(findPermissionIdByRole(role));
-            Set<Permission> permissions1 = new HashSet<>();
-            for (Permission permission : permissions) {
-                permissions1.add(permission);
+    public HashMap<String,Object> selectAll() {
+        HashMap<String,Object> resMap = new HashMap<>();
+        ArrayList<User> users = userMapper.selectAll();
+        ArrayList<String> roles = new ArrayList<>();
+        for(User user : users){
+            //查询用户角色
+            Integer roleId = selectUserRoleId(user.getId());
+            //添加用户信息
+            users.add(user);
+            //添加角色信息
+            if(roleId == 1){
+            //系统管理员
+                roles.add("系统管理员");
+            }else {
+                //健康管理师
+                roles.add("健康管理师");
             }
-            role.setPermissions(permissions1);
         }
 
-        Set<Role> roles1 = new HashSet<>();
-        for (Role role : roles) {
-            roles1.add(role);
+        return resMap;
+
+    }
+
+    @Override
+    public boolean deleteUser(Integer id) {
+        return userMapper.deleteByPrimaryKey(id)==1;
+    }
+
+    @Autowired
+    UserRoleMapper userRoleMapper;
+
+    /**
+     *
+     * @param username
+     * @param password
+     * @return 0：用户不存在  -1：密码错误  1：登录成功
+     */
+    @Override
+    public int login(String username, String password) {
+
+        //查询用户
+        User user = userMapper.selectByUsername(username);
+        //判断用户名是否存在
+        if(user == null){
+            return 0;
         }
-        user.setRoles(roles1);
-        return user;
+        //判断密码是否正确
+        System.out.println(MD5Utils.md5(password));
+        System.out.println(user.getPassword());
+        if(!MD5Utils.md5(password).equals(user.getPassword())){
+            return -1;
+        }
+        //登录成功
+        return 1;
     }
 
 
-    //根据user的id查询对应的role的id集合
-    public List<Integer> findRoleIdByUserId(Integer userId){
-        ArrayList<Integer> list = new ArrayList<>();
-        Example example = new Example(UserAndRole.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("userId",userId);
-        List<UserAndRole> userAndRoles = userAndRoleMapper.selectByExample(example);
-        for (UserAndRole userAndRole : userAndRoles) {
-            list.add(userAndRole.getRoleId());
+    @Override
+    public User selectUserByname(String username) {
+        return userMapper.selectByUsername(username);
+    }
+
+    @Override
+    public int selectUserRoleId(int userid) {
+        return userRoleMapper.selectUserRoleId(userid);
+    }
+
+    /*
+    * 更新用户信息
+    * */
+    @Override
+    public boolean updateUser(User user, String symbol) {
+        Integer num ;
+//        判断添加还是更新数据
+        if("add".equals(symbol)){
+            num = userMapper.insert(user);
+        }else if("update".equals(symbol)){
+            //判断用户名是否为空
+            if(ObjectUtils.isEmpty(user.getId())){
+                num = 0;
+            }else{
+                num = userMapper.updateByPrimaryKey(user);
+            }
+        }else{
+            return false;
         }
-        return list;
+        return num==1;
+
     }
 
-    //根据role的id集合查找role的集合
-    public List<Role> findRoleByRoleId(List<Integer> roleIds){
-        Example example = new Example(Role.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andIn("id",roleIds);
-        List<Role> roles = roleMapper.selectByExample(example);
-        return roles;
-    }
-
-    //根据role查找对应的权限id的集合
-    public List<Integer> findPermissionIdByRole(Role role){
-        ArrayList<Integer> list = new ArrayList<>();
-        Example example = new Example(RoleAndPermission.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("roleId",role.getId());
-        List<RoleAndPermission> roleAndPermissions = roleAndPermissionMapper.selectByExample(example);
-        for (RoleAndPermission roleAndPermission : roleAndPermissions) {
-            list.add(roleAndPermission.getPermissionId());
-        }
-        return list;
-    }
-
-    //根据permission的id查找权限的集合
-    public List<Permission> findPermissionByPermissionId(List<Integer> permissionIds){
-        Example example = new Example(Permission.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andIn("id",permissionIds);
-        List<Permission> permissions = permissionMapper.selectByExample(example);
-        return permissions;
+    @Override
+    public String createToken(String username) {
+        User user = selectUserByname(username);
+        //查询用户的权限
+        int roleId = selectUserRoleId(user.getId());
+        String token = JwtUtil.createToken(username, roleId, MyConstant.LOGIN_TOKEN);
+        return token;
     }
 }
