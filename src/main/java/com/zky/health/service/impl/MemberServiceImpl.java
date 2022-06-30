@@ -1,63 +1,71 @@
-package com.pangzhao.service.impl;
+package com.zky.health.service.impl;
 
-import com.pangzhao.mapper.MemberMapper;
-import com.pangzhao.pojo.Member;
-import com.pangzhao.service.MemberService;
-import com.alibaba.dubbo.config.annotation.Service;
+import com.zky.health.dao.MemberMapper;
+import com.zky.health.entity.Member;
+import com.zky.health.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import tk.mybatis.mapper.entity.Example;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.List;
 
 /**
- *
+ * @Description: 会员实现类
+ * @BelongsProject: health
+ * @BelongsPackage: com.zky.health.service.impl
+ * @Author: KeYu-Zhao
+ * @CreateTime: 2022-06-24 14:03
+ * @Email: 2540560264@qq.com
+ * @Version: 1.0
  */
-@Service
+@Component
 public class MemberServiceImpl implements MemberService {
 
     @Autowired
-    private MemberMapper memberMapper;
+    MemberMapper memberMapper;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Override
-    public Member findById(Integer id) {
-        return memberMapper.selectByPrimaryKey(id);
+    public Member queryByName(String membername) {
+        return memberMapper.selectByName(membername);
     }
 
     @Override
-    public Map<String, List> findByDate() {
-        List<Map> members = memberMapper.findByDate();
-        Map map = new HashMap();
-        ArrayList<String> timeList = new ArrayList<>();
-        ArrayList<Long> totalList = new ArrayList<>();
-        for (Map member : members) {
-            timeList.add(Calendar.getInstance().get(Calendar.YEAR) + "." + member.get("time"));
-            Long total = (Long) member.get("total");
-            totalList.add(total);
-        }
-
-        map.put("months", timeList);
-        map.put("memberCount", totalList);
-        return map;
+    public List<Member> selectAllMembers() {
+        return memberMapper.selectAllMembers();
     }
 
-    /**
-     * 验证是否存在该会员 即手机号是否存在于数据库表中
-     */
     @Override
-    public void checkLogin(String telephone) {
-        //判断表中是否存在该手机号
-        Example example = new Example(Member.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("telephone", telephone);
-        Member member = memberMapper.selectOneByExample(example);
+    public int insertMember(Member member) {
+        return memberMapper.insert(member);
+    }
 
-        Member newMember = new Member();
-        newMember.setName(telephone);
-        newMember.setPhoneNumber(telephone);
-        if (member == null) {
-            //如果数据库中 无该用户的数据 插入数据库
-            memberMapper.insert(newMember);
+    @Override
+    public int deleteMember(int userid) {
+        return memberMapper.deleteByPrimaryKey(userid);
+    }
+
+    @Override
+    public int deleteMembers(List<Integer> membersId) {
+
+        int res = 0;
+
+        for (Integer integer : membersId) {
+            res += deleteMember(integer);
         }
 
+        return res;
+    }
+
+    @Override
+    public Member selectByPrimaryKey(Integer integer) {
+        return memberMapper.selectByPrimaryKey(integer);
+    }
+
+    @Override
+    public int updateMembers(Member member) {
+        return memberMapper.updateByPrimaryKey(member);
     }
 }
