@@ -1,126 +1,271 @@
 package com.zky.health.controller;
 
-import com.pangzhao.constant.MessageConstant;
-import com.pangzhao.constant.RedisMessageConstant;
-import com.pangzhao.entity.Result;
-import com.pangzhao.pojo.Member;
-import com.pangzhao.pojo.Order;
-import com.pangzhao.pojo.Setmeal;
-import com.pangzhao.service.MemberService;
-import com.pangzhao.service.OrderService;
-import com.pangzhao.service.OrderSettingService;
-import com.pangzhao.service.SetMealService;
-import com.pangzhao.util.DateUtils;
-import com.alibaba.dubbo.config.annotation.Reference;
+import com.zky.health.constant.MyConstant;
+import com.zky.health.entity.Member;
+import com.zky.health.entity.Order;
+import com.zky.health.entity.Ordersetting;
+import com.zky.health.entity.Result;
+import com.zky.health.service.MemberService;
+import com.zky.health.service.OrderServcie;
+import com.zky.health.service.OrderSettingService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
- * @author 戴金华
- * @date 2019-11-13 18:27
+ * @description：预约管理
+ * @BelongsProject: health
+ * @BelongsPackage: com.zky.health.controller
+ * @Author: KeYu-Zhao
+ * @CreateTime: 2022-06-24 16:28
+ * @Email: 2540560264@qq.com
+ * @Version: 1.0
  */
+
+@CrossOrigin
 @RestController
-@RequestMapping("/order")
+@Api(tags = "预约相关接口")//swagger 标注这是一个控制器类
 public class OrderController {
 
-    @Reference
-    private OrderService orderService;
     @Autowired
-    private RedisTemplate redisTemplate;
-    @Reference
-    private OrderSettingService orderSettingService;
-    @Reference
-    private MemberService memberService;
-    @Reference
-    private SetMealService setMealService;
+    OrderServcie orderServcie;
+
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    OrderSettingService orderSettingService;
+
+    /**
+     * @description：查询所有预约列表
+     * @return：包含List订单列表
+     */
+    @GetMapping("/api/queryorders")
+    public Result selectAllOrders(){
+
+        Result result;
+
+        List<Order> orders = orderServcie.selectAllOrders();
 
 
-    @RequestMapping("/checkValidateCode.do")
-    public Result checkValidateCode(String validateCode, String phone){
-        //获取缓存中的验证码
-        String realCode = (String) redisTemplate.boundValueOps(phone + RedisMessageConstant.SENDTYPE_ORDER).get();
-        try {
-            if (validateCode.equals(realCode)){
-                //如果验证码输入正确
-                return new Result(true,"验证码输入正确");
-            }else{
-                return new Result(false,"验证码输入错误");
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result(false,e.getMessage());
+
+        ArrayList<HashMap<Object, Object>> orderList = new ArrayList();
+
+        //得到每个预约的用户
+        for (Order order : orders) {
+
+            //存放返回结果
+            HashMap<Object, Object> resMap = new HashMap<>();
+
+            Integer memberId = order.getMemberId();
+            Member member = memberService.selectByPrimaryKey(memberId);
+            String time = new SimpleDateFormat(MyConstant.TIME_PATTERN).format(order.getOrderdate());
+
+            if(member == null) continue;
+
+            resMap.put("date", time);
+            resMap.put("id", order.getId());
+            resMap.put("membername", member.getName());
+            resMap.put("phone", member.getPhonenumber());
+            resMap.put("ordertype", order.getOrdertype());
+            resMap.put("orderstatus", order.getOrderstatus());
+
+            orderList.add(resMap);
+
         }
+
+        result = Result.success();
+        result.setMessage("查询预约列表成功");
+        result.setData(orderList);
+
+        return result;
+
     }
 
-    @RequestMapping("/checkOrderDate.do")
-    public Result checkOrderDate(String orderDate){
-        try {
-            Result result = orderSettingService.findByDate(orderDate);
+    @GetMapping("/api/orderaffirm/{id}")
+    public Result orderAffirm(@PathVariable("id") Integer id){
+
+        Result result;
+
+        Order order = orderServcie.selectByPrimaryKey(id);
+
+        int i = orderServcie.affirmOrder(id);
+
+        if(i == -1){
+            result = Result.error();
+            result.setMessage("已经预约过了~");
             return result;
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result(false,"该日期预约已满");
         }
+
+        if(i > 0){
+            result = Result.success();
+            result.setMessage("确认预约成功~");
+            return result;
+        }
+
+        //更新预约设置数据，将剩余人数-1
+        Ordersetting ordersetting = orderSettingService.queryOrderSettingByDate(order.getOrderdate());
+        ordersetting.setReservations(ordersetting.getReservations()-1);
+        orderSettingService.updateOrderSetting(ordersetting);
+
+        result = Result.error();
+        result.setMessage("预约失败！请联系管理员");
+
+        return result;
     }
 
+    /**
+     * @decription；取消预约
+     * @param id
+     * @return
+     */
+    @GetMapping("/api/cancelorder/{id}")
+    public Result cancelOrder(@PathVariable("id") Integer id){
 
-    @RequestMapping("/postOrder.do")
-    public Result postOrder(@RequestBody Map map){
-        try {
-            String orderDate = (String) map.get("orderDate");
-            String setmealIdStr = (String) map.get("setmealId");
-            Integer setmealId = Integer.parseInt(setmealIdStr);
-            String idCard = (String) map.get("idCard");
-            String name = (String) map.get("name");
-            String sex = (String) map.get("sex");
-            String phoneNumber = (String) map.get("telephone");
-            Member member = new Member();
-            member.setIdCard(idCard);
-            member.setName(name);
-            member.setSex(sex);
-            member.setPhoneNumber(phoneNumber);
+        Result result;
 
-            Order order = new Order();
-            order.setOrderDate(DateUtils.parseString2Date(orderDate));
-            order.setSetmealId(setmealId);
-            order.setOrderType("微信预约");
-            order.setOrderStatus("未到诊");
-            //判断该用户是否在同一天预定过该套餐
-            Result result = orderService.hasOrderedSetMeal(member,orderDate,setmealId);
-            if (result.isFlag()){
-                //如果未订购过
-                //判断用户是否是会员 如果不是会员 注册 如果是会员 直接预定
-                return orderService.postOrder(order,member);
-            }else{
-                return result;
+        Order order = orderServcie.selectByPrimaryKey(id);
+
+        int i = orderServcie.cancelOrder(order);
+
+        if(i == -1){
+            result = Result.error();
+            result.setMessage("用户还没有预约哦~请先预约");
+        }
+
+        if(i < 0){
+            result = Result.error();
+            result.setMessage("取消预约失败");
+        }
+
+        //更新预约设置数据，将剩余人数+1
+        Ordersetting ordersetting = orderSettingService.queryOrderSettingByDate(order.getOrderdate());
+        ordersetting.setReservations(ordersetting.getReservations()+1);
+        orderSettingService.updateOrderSetting(ordersetting);
+
+        result = Result.success();
+        result.setMessage("用户取消预约成功~");
+
+        return result;
+
+    }
+    /*
+    * 上传预约表格
+    * */
+    @PostMapping(value = "/api/importExcel")
+    public Result ImportExcel(MultipartFile orderfiles) {
+        Result result;
+        if (orderfiles.isEmpty()) {
+            result = Result.error();
+            result.setMessage("上传表格失败！");
+        } else {
+
+            String fileName = orderfiles.getOriginalFilename();
+            if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
+                result = Result.error();
+                result.setMessage("文件格式不正确！");
+
+            }else {
+                boolean OK = orderServcie.insertExcel(fileName, orderfiles);
+                if (OK) {
+                    result = Result.success();
+                    result.setMessage("上传成功！");
+                } else {
+                    result = Result.error();
+                    result.setMessage("发生服务器内部错误，上传失败!");
+                }
             }
-
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result(false, MessageConstant.ORDERSETTING_FAIL);
         }
+        return  result;
+    }
+
+    /*
+    * 下载表格模板
+    * */
+    @PostMapping(value = "/api/downloadModel")
+    public Result downloadModel(){
+        Result result;
+        File model =  orderServcie.downloadModel();
+        if(ObjectUtils.isEmpty(model)){
+            result = Result.error();
+            result.setMessage("出现未知错误！模板下载失败");
+        }else{
+            result = Result.success();
+            result.setData(model);
+            result.setMessage("获取模板成功！！！");
+        }
+
+        return  result;
     }
 
 
-    @RequestMapping("/findById.do")
-    public Map findById(Integer id) throws Exception {
-        Map map = new HashMap();
+    /**
+     * @description：插入预约设置
+     * @param ordersetting
+     * @return
+     */
+    @PostMapping("/api/addordersetting")
+    public Result addOrderSetting(@RequestBody Ordersetting ordersetting){
 
-        Order order = orderService.findById(id);
-        Member member = memberService.findById(order.getMemberId());
-        Setmeal setmeal = setMealService.findById(order.getSetmealId());
+        Result result;
 
-        map.put("member",member.getName());
-        map.put("setmeal",setmeal.getName());
-        map.put("orderDate", DateUtils.parseDate2String(order.getOrderDate()));
-        map.put("orderType",order.getOrderType());
-        return map;
+        int i = orderSettingService.insertOrderSetting(ordersetting);
+
+        if(i <= 0){
+            result = Result.error();
+            result.setMessage("插入失败，请联系管理员！");
+            return result;
+        }
+
+        result = Result.success();
+        result.setMessage("插入成功~");
+
+        return result;
     }
+
+    /**
+     * @description：查询某个日期的预约人数以及可预约人数
+     * @param strDate
+     * @return
+     */
+    @GetMapping("/api/queryordersettingbydate/{date}")
+    public Result queryOrderSettingByDate(@PathVariable("date") String strDate){
+
+        Result result;
+
+        Date date = null;
+
+        try {
+            date = new SimpleDateFormat(MyConstant.TIME_PATTERN).parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        if(date == null){
+            result = Result.error();
+            result.setMessage("请选择日期！");
+            return result;
+        }
+
+        Ordersetting ordersetting = orderSettingService.queryOrderSettingByDate(date);
+        ordersetting.setNumber(ordersetting.getNumber() - ordersetting.getReservations());
+
+        result = Result.success();
+        result.setMessage("查询预约设置成功");
+        result.setData(ordersetting);
+
+        return result;
+    }
+
 }
-

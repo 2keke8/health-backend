@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zky.health.dao.DiseaseMapper">
+  <resultMap id="BaseResultMap" type="com.zky.health.entity.Disease">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="room" jdbcType="VARCHAR" property="room" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="deadline" jdbcType="VARCHAR" property="deadline" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, room, level, deadline
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_disease
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_disease
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_disease
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zky.health.entity.Disease">
+    insert into t_disease (id, name, room,
+      level, deadline)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{room,jdbcType=VARCHAR},
+      #{level,jdbcType=INTEGER}, #{deadline,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zky.health.entity.Disease">
+    insert into t_disease
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="room != null">
+        room,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="deadline != null">
+        deadline,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="room != null">
+        #{room,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="deadline != null">
+        #{deadline,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zky.health.entity.Disease">
+    update t_disease
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="room != null">
+        room = #{room,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="deadline != null">
+        deadline = #{deadline,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zky.health.entity.Disease">
+    update t_disease
+    set name = #{name,jdbcType=VARCHAR},
+      room = #{room,jdbcType=VARCHAR},
+      level = #{level,jdbcType=INTEGER},
+      deadline = #{deadline,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

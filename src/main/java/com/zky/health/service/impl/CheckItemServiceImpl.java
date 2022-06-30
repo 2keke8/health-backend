@@ -1,103 +1,40 @@
-package com.pangzhao.service.impl;
+package com.zky.health.service.impl;
 
-import com.pangzhao.entity.PageResult;
-import com.pangzhao.mapper.CheckGroupAndCheckItemMapper;
-import com.pangzhao.mapper.CheckItemMapper;
-import com.pangzhao.pojo.CheckGroupAndCheckItem;
-import com.pangzhao.pojo.CheckItem;
-import com.pangzhao.service.CheckItemService;
-import com.alibaba.dubbo.config.annotation.Service;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.zky.health.dao.CheckitemMapper;
+import com.zky.health.entity.Checkitem;
+import com.zky.health.service.CheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import tk.mybatis.mapper.entity.Example;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-
 /**
- * 体检检查项管理
+ * @Description:
+ * @BelongsProject: health
+ * @BelongsPackage: com.zky.health.service.impl
+ * @Author: KeYu-Zhao
+ * @CreateTime: 2022-06-25 10:12
+ * @Email: 2540560264@qq.com
+ * @Version: 1.0
  */
-@Service(interfaceClass = CheckItemService.class)
+@Component
 public class CheckItemServiceImpl implements CheckItemService {
 
     @Autowired
-    private CheckItemMapper checkItemMapper;
-
-    @Autowired
-    private CheckGroupAndCheckItemMapper checkGroupAndCheckItemMapper;
+    CheckitemMapper checkitemMapper;
 
     @Override
-    public PageResult findByPage(Integer currentPage, Integer pageSize, String queryString) {
-
-        Page<CheckItem> checkItems;
-
-        if (queryString != "" && queryString != null) {
-            //如果查询参数不为空
-            Example example = new Example(CheckItem.class);
-            Example.Criteria criteria = example.createCriteria();
-            criteria.orLike("code", "%" + queryString + "%").orLike("name", "%" + queryString + "%");
-            PageHelper.startPage(currentPage, pageSize);
-            checkItems = (Page<CheckItem>) checkItemMapper.selectByExample(example);
-        } else {
-            //如果参数为空
-            PageHelper.startPage(currentPage, pageSize);
-            checkItems = (Page<CheckItem>) checkItemMapper.selectAll();
-        }
-        return new PageResult(checkItems.getTotal(), checkItems.getResult());
+    public List<Checkitem> selectAllItems() {
+        return checkitemMapper.selectAllItems();
     }
 
-    /**
-     * 添加检查项
-     *
-     * @param checkItem
-     */
     @Override
-    public void add(CheckItem checkItem) {
-        checkItemMapper.insert(checkItem);
+    public int updateitem(Checkitem checkitem) {
+        return checkitemMapper.updateByPrimaryKey(checkitem);
     }
 
-    /**
-     * 根据id查询对象
-     *
-     * @param id
-     * @return
-     */
     @Override
-    public CheckItem findById(Integer id) {
-        return checkItemMapper.selectByPrimaryKey(id);
-    }
-
-    /**
-     * 修改checkItem
-     *
-     * @param checkItem
-     */
-    @Override
-    public void update(CheckItem checkItem) {
-        checkItemMapper.updateByPrimaryKeySelective(checkItem);
-    }
-
-    /**
-     * 删除
-     *
-     * @param id
-     */
-    @Override
-    public void deleteCheckItem(Integer id) {
-        Example example = new Example(CheckGroupAndCheckItem.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("checkItemId", id);
-        int count = checkGroupAndCheckItemMapper.selectCountByExample(example);
-        if (count > 0) {
-            throw new RuntimeException("该检查项是某一检查组的内容,不可删除");
-        }
-        checkItemMapper.deleteByPrimaryKey(id);
-    }
-
-    //查询所有
-    @Override
-    public List<CheckItem> findAll() {
-        return checkItemMapper.selectAll();
+    public int deleteCheckItem(Integer id) {
+        return checkitemMapper.deleteByPrimaryKey(id);
     }
 }

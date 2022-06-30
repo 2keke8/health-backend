@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zky.health.dao.SetmealCheckgroupMapper">
+  <resultMap id="BaseResultMap" type="com.zky.health.entity.SetmealCheckgroupKey">
+    <id column="setmeal_id" jdbcType="INTEGER" property="setmealId" />
+    <id column="checkgroup_id" jdbcType="INTEGER" property="checkgroupId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.zky.health.entity.SetmealCheckgroupKey">
+    delete from t_setmeal_checkgroup
+    where setmeal_id = #{setmealId,jdbcType=INTEGER}
+      and checkgroup_id = #{checkgroupId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.zky.health.entity.SetmealCheckgroupKey">
+    insert into t_setmeal_checkgroup (setmeal_id, checkgroup_id)
+    values (#{setmealId,jdbcType=INTEGER}, #{checkgroupId,jdbcType=INTEGER})
+  </insert>
+
+  <delete id="selectGroupIdByMealId" parameterType="java.lang.Integer">
+    select checkgroup_id from t_setmeal_checkgroup
+    where setmeal_id = #{setmealId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" parameterType="com.zky.health.entity.SetmealCheckgroupKey">
+    insert into t_setmeal_checkgroup
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="setmealId != null">
+        setmeal_id,
+      </if>
+      <if test="checkgroupId != null">
+        checkgroup_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="setmealId != null">
+        #{setmealId,jdbcType=INTEGER},
+      </if>
+      <if test="checkgroupId != null">
+        #{checkgroupId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>
